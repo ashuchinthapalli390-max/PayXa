@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BadgeCheck, Building2, Clock, Landmark, Lock, ShieldCheck } from "lucide-react";
-import { auth } from "@/auth";
+import { getSession } from "@/auth";
 import { PageHeader, Panel, Pill } from "@/components/dashboard/ui";
 import { Toggle } from "@/components/dashboard/Interactive";
 import { Avatar } from "@/components/dashboard/Shell";
@@ -17,7 +17,7 @@ const verification = [
 ];
 
 export default async function SettingsPage() {
-  const session = await auth();
+  const session = await getSession();
   const user = session?.user ?? {};
   return (
     <div className="mx-auto max-w-[1100px]">

@@ -3,7 +3,10 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import type { Provider } from "next-auth/providers";
 
-export const googleEnabled = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
+/** Auth.js needs a secret in production; without it we degrade gracefully instead of crashing. */
+export const authConfigured = Boolean(process.env.AUTH_SECRET) || process.env.NODE_ENV !== "production";
+
+export const googleEnabled = authConfigured && Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
 
 /** Test merchant sign-in: development only, and only when explicitly enabled. */
 export const testLoginEnabled = process.env.NODE_ENV !== "production" && process.env.AUTH_TEST_LOGIN === "true";
@@ -25,10 +28,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
-  callbacks: {
-    authorized({ auth: session, request }) {
-      if (request.nextUrl.pathname.startsWith("/dashboard")) return !!session?.user;
-      return true;
-    },
-  },
 });
+
+/** Session lookup that never throws (missing secret, bad cookie, etc. → signed out). */
+export async function getSession() {
+  if (!authConfigured) return null;
+  try {
+    return await auth();
+  } catch {
+    return null;
+  }
+}

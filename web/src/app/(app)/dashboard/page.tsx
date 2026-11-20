@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Check, CircleDashed, Clock, IndianRupee, Lock, ShieldAlert, Smartphone, Wallet } from "lucide-react";
-import { auth } from "@/auth";
+import { getSession } from "@/auth";
 import { Kpi, Panel, PageHeader, StatusBadge, td, th } from "@/components/dashboard/ui";
 import { AreaChart, StatusMix } from "@/components/dashboard/Charts";
 import { LiveFeed, QuickActions } from "@/components/dashboard/Live";
@@ -16,7 +16,7 @@ const onboarding = [
 ];
 
 export default async function Overview() {
-  const session = await auth();
+  const session = await getSession();
   const first = session?.user?.name?.split(" ")[0] ?? "there";
   const doneCount = onboarding.filter((s) => s.done).length;
   const hour = Number(new Date().toLocaleString("en-IN", { hour: "numeric", hour12: false, timeZone: "Asia/Kolkata" }));

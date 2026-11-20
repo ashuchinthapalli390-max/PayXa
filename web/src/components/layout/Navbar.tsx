@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -17,6 +18,19 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+  const [user, setUser] = useState<{ name?: string | null; image?: string | null } | null>(null);
+
+  // Public pages stay static; the signed-in state is fetched on the client.
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/auth/session", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((s) => alive && setUser(s?.user ?? null))
+      .catch(() => alive && setUser(null));
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     let last = window.scrollY;
@@ -134,15 +148,30 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className="hidden px-3 font-mono text-[11px] tracking-[0.2em] text-muted uppercase transition-colors hover:text-paper sm:block"
-            >
-              Log in
-            </Link>
-            <Link href="/register" className="btn btn-primary btn-sm hidden sm:inline-flex">
-              Get started
-            </Link>
+            {user ? (
+              <Link href="/dashboard" className="hidden items-center gap-2.5 rounded-full border border-white/10 py-1 pr-4 pl-1 transition-colors hover:border-crimson/50 sm:flex">
+                {user.image ? (
+                  <Image src={user.image} alt="" width={28} height={28} className="size-7 rounded-full" />
+                ) : (
+                  <span className="grid size-7 place-items-center rounded-full bg-crimson font-display text-[10px] font-bold">
+                    {(user.name ?? "M").slice(0, 1).toUpperCase()}
+                  </span>
+                )}
+                <span className="font-mono text-[11px] tracking-[0.18em] uppercase">Dashboard</span>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="hidden px-3 font-mono text-[11px] tracking-[0.2em] text-muted uppercase transition-colors hover:text-paper sm:block"
+                >
+                  Log in
+                </Link>
+                <Link href="/register" className="btn btn-primary btn-sm hidden sm:inline-flex">
+                  Get started
+                </Link>
+              </>
+            )}
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -189,14 +218,20 @@ export default function Navbar() {
                   ),
                 )}
               </ul>
-              <div className="mt-auto grid grid-cols-2 gap-3">
-                <Link href="/login" className="btn btn-ghost">
-                  Log in
+              {user ? (
+                <Link href="/dashboard" className="btn btn-primary mt-auto">
+                  Open dashboard
                 </Link>
-                <Link href="/register" className="btn btn-primary">
-                  Get started
-                </Link>
-              </div>
+              ) : (
+                <div className="mt-auto grid grid-cols-2 gap-3">
+                  <Link href="/login" className="btn btn-ghost">
+                    Log in
+                  </Link>
+                  <Link href="/register" className="btn btn-primary">
+                    Get started
+                  </Link>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
