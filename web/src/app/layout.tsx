@@ -3,10 +3,6 @@ import "@fontsource-variable/unbounded";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import SmoothScroll from "@/components/fx/SmoothScroll";
-import SceneLayer from "@/components/three/SceneLayer";
 import { CheckoutProvider } from "@/components/checkout/CheckoutProvider";
 import { site } from "@/lib/site";
 
@@ -36,15 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to content
         </a>
-        <CheckoutProvider>
-          <SmoothScroll />
-          <SceneLayer />
-          <Navbar />
-          <main id="main" className="relative z-10">
-            {children}
-          </main>
-          <Footer />
-        </CheckoutProvider>
+        <CheckoutProvider>{children}</CheckoutProvider>
       </body>
     </html>
   );

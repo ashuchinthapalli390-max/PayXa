@@ -5,6 +5,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { sceneStore, type Shape } from "./sceneStore";
 import { facing, getShape, tints } from "./shapes";
+import { getQr } from "@/lib/qr";
 
 const CRIMSON = new THREE.Color("#d90429");
 const NEON = new THREE.Color("#ff4265");
@@ -124,6 +125,120 @@ function ScannerRig({ group }: { group: React.RefObject<THREE.Group | null> }) {
   );
 }
 
+/**
+ * Real QR code as solid 3D voxels. Blocks fly in and assemble when the hero
+ * scene is active, pop up as the laser passes, and scatter away afterwards.
+ */
+function QRVoxels() {
+  const mesh = useRef<THREE.InstancedMesh>(null);
+  const logo = useRef<THREE.Group>(null);
+  const shown = useRef(0);
+
+  const data = useMemo(() => {
+    const q = getQr();
+    const size = q.size;
+    const c0 = size / 2 - 4.5;
+    const c1 = size / 2 + 4.5;
+    const cells: [number, number][] = [];
+    for (let y = 0; y < size; y++)
+      for (let x = 0; x < size; x++) if (q.on(x, y) && !(x > c0 && x < c1 && y > c0 && y < c1)) cells.push([x, y]);
+    const cell = 3.3 / size;
+    const n = cells.length;
+    const home = new Float32Array(n * 3);
+    const away = new Float32Array(n * 3);
+    const delay = new Float32Array(n);
+    const finder = new Uint8Array(n);
+    cells.forEach(([x, y], i) => {
+      finder[i] = (x < 7 && y < 7) || (x >= size - 7 && y < 7) || (x < 7 && y >= size - 7) ? 1 : 0;
+      const hx = ((x + 0.5) / size - 0.5) * 3.3;
+      const hy = (0.5 - (y + 0.5) / size) * 3.3;
+      home.set([hx, hy, 0], i * 3);
+      const a = Math.random() * Math.PI * 2;
+      const r = 4 + Math.random() * 5;
+      away.set([Math.cos(a) * r, Math.sin(a) * r, -3 - Math.random() * 6], i * 3);
+      delay[i] = Math.hypot(hx, hy) / 2.4; // assemble from the centre outward
+    });
+    return { n, cell, home, away, delay, finder, cur: away.slice() };
+  }, []);
+
+  const mat = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.35, metalness: 0.25, emissive: new THREE.Color("#2a0008"), transparent: true }),
+    [],
+  );
+  const geo = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const logoTex = useMemo(() => {
+    const t = new THREE.TextureLoader().load("/brand/payxa-mark.png");
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }, []);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const col = useMemo(() => new THREE.Color(), []);
+  const white = useMemo(() => new THREE.Color("#f4f1f2"), []);
+  const hot = useMemo(() => new THREE.Color("#ff2d55"), []);
+  const t0 = useRef(0);
+
+  useFrame(({ clock }, dtRaw) => {
+    const dt = Math.min(dtRaw, 0.05);
+    const t = clock.getElapsedTime();
+    const s = sceneStore.get();
+    const on = s.shape === "qr";
+    if (on && shown.current === 0) t0.current = t;
+    shown.current = on ? 1 : 0;
+    const m = mesh.current;
+    if (!m) return;
+    const scanY = Math.sin(t * 1.15) * SCAN_H;
+    const { n, cell, home, away, delay, finder, cur } = data;
+    const since = t - t0.current;
+    let visible = false;
+    for (let i = 0; i < n; i++) {
+      const i3 = i * 3;
+      const go = on && since > delay[i] * 0.9;
+      const src = go ? home : away;
+      const k = 1 - Math.exp(-dt * (go ? 5 : 2.2));
+      cur[i3] += (src[i3] - cur[i3]) * k;
+      cur[i3 + 1] += (src[i3 + 1] - cur[i3 + 1]) * k;
+      cur[i3 + 2] += (src[i3 + 2] - cur[i3 + 2]) * k;
+      const dist = Math.abs(cur[i3 + 2] - home[i3 + 2]) + Math.abs(cur[i3] - home[i3]);
+      if (dist < 6) visible = true;
+      const glow = on ? Math.max(0, 1 - Math.abs(cur[i3 + 1] - scanY) / 0.22) : 0;
+      const depth = (finder[i] ? 0.22 : 0.14) + glow * 0.35;
+      dummy.position.set(cur[i3], cur[i3 + 1], cur[i3 + 2] + depth / 2);
+      dummy.rotation.set(0, 0, 0);
+      const sc = cell * (finder[i] ? 0.98 : 0.9);
+      dummy.scale.set(sc, sc, depth);
+      dummy.updateMatrix();
+      m.setMatrixAt(i, dummy.matrix);
+      col.copy(finder[i] ? hot : white).lerp(finder[i] ? white : hot, glow);
+      m.setColorAt(i, col);
+    }
+    m.instanceMatrix.needsUpdate = true;
+    if (m.instanceColor) m.instanceColor.needsUpdate = true;
+    mat.opacity = damp(mat.opacity, on ? 1 : 0, on ? 4 : 2, dt);
+    m.visible = visible && mat.opacity > 0.02;
+    if (logo.current) {
+      const ls = damp(logo.current.scale.x, on && since > 0.4 ? 1 : 0.001, 4, dt);
+      logo.current.scale.setScalar(ls);
+      logo.current.visible = ls > 0.02;
+    }
+  });
+
+  return (
+    <group>
+      <instancedMesh ref={mesh} args={[geo, mat, data.n]} frustumCulled={false} />
+      <group ref={logo}>
+        <mesh position={[0, 0, 0.08]}>
+          <boxGeometry args={[0.78, 0.78, 0.12]} />
+          <meshStandardMaterial color="#0b0a0d" roughness={0.4} metalness={0.3} />
+        </mesh>
+        <mesh position={[0, 0, 0.15]}>
+          <planeGeometry args={[0.62, 0.32]} />
+          <meshBasicMaterial map={logoTex} transparent toneMapped={false} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
 function Particles({ count }: { count: number }) {
   const { viewport, gl } = useThree();
   const group = useRef<THREE.Group>(null);
@@ -211,13 +326,14 @@ function Particles({ count }: { count: number }) {
     const g = group.current;
     if (!g) return;
     const mobile = viewport.aspect < 0.9;
-    g.position.x = damp(g.position.x, mobile ? 0 : sideOffset(s.side, viewport.width), 2.2, dt);
+    const heroPush = s.shape === "qr" && s.side === "right" ? viewport.width * 0.04 : 0;
+    g.position.x = damp(g.position.x, mobile ? 0 : sideOffset(s.side, viewport.width) + heroPush, 2.2, dt);
     g.position.y = damp(g.position.y, isGrid ? -0.2 : 0, 2.2, dt);
     const vel = Math.min(Math.abs(s.velocity), 60);
     if (facing[s.shape]) {
       const TAU = Math.PI * 2;
       const ry = ((((g.rotation.y + Math.PI) % TAU) + TAU) % TAU) - Math.PI;
-      const sway = s.shape === "qr" || s.shape === "card" ? 0.42 : 0.18;
+      const sway = s.shape === "qr" ? 0.26 : s.shape === "card" ? 0.42 : 0.18;
       g.rotation.y = damp(ry, Math.sin(t * 0.35) * sway + s.pointerX * 0.3, 2, dt);
       g.rotation.x = damp(g.rotation.x, (isGrid ? 0.25 : Math.sin(t * 0.27) * 0.12) - s.pointerY * 0.18, 2, dt);
       g.rotation.z = damp(g.rotation.z, s.shape === "card" ? -0.12 : 0, 2, dt);
@@ -247,6 +363,7 @@ function Particles({ count }: { count: number }) {
   return (
     <group ref={group}>
       <points geometry={geo} material={mat} frustumCulled={false} />
+      <QRVoxels />
       <ScannerRig group={group} />
     </group>
   );
@@ -339,6 +456,9 @@ function World() {
   return (
     <>
       <CameraRig />
+      <ambientLight intensity={0.55} />
+      <directionalLight position={[-3, 4, 6]} intensity={1.6} />
+      <pointLight position={[3, -2, 3]} intensity={18} distance={12} color="#ff2d55" />
       <Stars sprite={sprite} count={mobile ? 450 : 900} />
       <Streams sprite={sprite} count={mobile ? 40 : 90} />
       <Particles count={mobile ? 2400 : 5200} />
