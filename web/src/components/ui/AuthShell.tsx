@@ -29,7 +29,7 @@ export default function AuthShell({
   const login = mode === "login";
   return (
     <section className="relative min-h-[100svh] overflow-hidden" data-scene="card" data-side="right">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_15%_50%,rgba(100,10,30,0.45),transparent_55%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_15%_50%,rgba(100,10,30,0.23),transparent_55%)]" />
       <div className="container-px grid min-h-[100svh] grid-cols-1 items-center gap-16 pt-[calc(var(--nav-h)+24px)] pb-16 lg:grid-cols-[minmax(0,440px)_1fr] lg:gap-24">
         <Reveal>
           <div className="w-full">

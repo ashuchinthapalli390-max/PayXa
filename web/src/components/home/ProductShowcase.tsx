@@ -274,7 +274,7 @@ export default function ProductShowcase() {
                   }`}
                 >
                   {i === active && (
-                    <motion.span layoutId="prod-bar" className="absolute inset-y-3 left-0 w-[3px] rounded-r bg-crimson shadow-[0_0_12px_#ff4265]" />
+                    <motion.span layoutId="prod-bar" className="absolute inset-y-3 left-0 w-[3px] rounded-r bg-crimson shadow-[0_0_12px_rgba(255,66,101,0.3)]" />
                   )}
                   <x.icon size={18} className={i === active ? "text-neon" : "text-dim"} />
                   <span className="font-display text-[13px] font-semibold tracking-wide uppercase">{x.name}</span>
@@ -287,7 +287,7 @@ export default function ProductShowcase() {
           <MaybeTilt on={!pinned}>
             <div className={`card noise relative overflow-hidden ${pinned ? "min-h-[min(520px,62svh)]" : "min-h-[520px]"}`}>
               <div className="grid-bg absolute inset-0 opacity-30" />
-              <div className="absolute -top-32 -right-32 size-96 rounded-full bg-crimson/20 blur-[100px]" />
+              <div className="absolute -top-32 -right-32 size-96 rounded-full bg-crimson/10 blur-[100px]" />
               <AnimatePresence mode="wait">
                 <motion.div
                   key={p.id}
@@ -322,7 +322,7 @@ export default function ProductShowcase() {
         {pinned && (
           <div className="mt-6 flex gap-1.5">
             {products.map((x, i) => (
-              <span key={x.id} className={`h-1 flex-1 rounded-full transition-colors duration-500 ${i <= active ? "bg-crimson shadow-[0_0_8px_#ff4265]" : "bg-white/10"}`} />
+              <span key={x.id} className={`h-1 flex-1 rounded-full transition-colors duration-500 ${i <= active ? "bg-crimson shadow-[0_0_8px_rgba(255,66,101,0.3)]" : "bg-white/10"}`} />
             ))}
           </div>
         )}

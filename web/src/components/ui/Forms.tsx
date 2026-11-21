@@ -22,7 +22,7 @@ export function Field({
   required?: boolean;
 }) {
   const cls =
-    "mt-2 w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-[15px] text-paper placeholder:text-dim outline-none transition-[border-color,box-shadow] focus:border-neon focus:shadow-[0_0_0_3px_rgba(255,66,101,0.18)]";
+    "mt-2 w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-[15px] text-paper placeholder:text-dim outline-none transition-[border-color,box-shadow] focus:border-neon focus:shadow-[0_0_0_3px_rgba(255,66,101,0.09)]";
   return (
     <label className="block">
       <span className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase">{label}</span>

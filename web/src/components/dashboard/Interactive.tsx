@@ -18,7 +18,7 @@ export function Modal({ open, onClose, title, children }: { open: boolean; onClo
             animate={{ y: 0, scale: 1 }}
             exit={{ y: 20, scale: 0.98 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#121015] shadow-[0_40px_120px_-30px_rgba(217,4,41,0.5)]"
+            className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#121015] shadow-[0_40px_120px_-30px_rgba(217,4,41,0.25)]"
           >
             <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
               <h2 className="text-[15px] font-semibold">{title}</h2>
@@ -74,7 +74,7 @@ export function Toggle({ defaultOn = false, label, disabled = false }: { default
 }
 
 const field =
-  "mt-1.5 w-full rounded-xl border border-white/10 bg-ink px-3.5 py-2.5 text-[14px] text-paper outline-none placeholder:text-dim focus:border-neon focus:shadow-[0_0_0_3px_rgba(255,66,101,0.15)]";
+  "mt-1.5 w-full rounded-xl border border-white/10 bg-ink px-3.5 py-2.5 text-[14px] text-paper outline-none placeholder:text-dim focus:border-neon focus:shadow-[0_0_0_3px_rgba(255,66,101,0.08)]";
 
 export function LinksManager() {
   const [links, setLinks] = useState<PaymentLink[]>(linkList);
@@ -116,7 +116,7 @@ export function LinksManager() {
           <tbody className="divide-y divide-white/[0.04]">
             <AnimatePresence initial={false}>
               {links.map((l) => (
-                <motion.tr key={l.id} initial={{ opacity: 0, backgroundColor: "rgba(255,66,101,0.12)" }} animate={{ opacity: 1, backgroundColor: "rgba(255,66,101,0)" }} className="hover:bg-white/[0.02]">
+                <motion.tr key={l.id} initial={{ opacity: 0, backgroundColor: "rgba(255,66,101,0.06)" }} animate={{ opacity: 1, backgroundColor: "rgba(255,66,101,0)" }} className="hover:bg-white/[0.02]">
                   <td className={td}>
                     <div className="font-medium">{l.title}</div>
                     <div className="flex items-center gap-1.5 font-mono text-[11px] text-dim">

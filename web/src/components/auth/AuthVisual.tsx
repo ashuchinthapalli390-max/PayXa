@@ -34,7 +34,7 @@ export default function AuthVisual() {
         initial={{ opacity: 0, rotateY: -18, rotateX: 10, y: 40 }}
         animate={{ opacity: 1, rotateY: -10, rotateX: 6, y: 0 }}
         transition={{ duration: 1.2, ease, delay: 0.3 }}
-        className="glass relative rounded-[28px] p-6 shadow-[0_60px_140px_-40px_rgba(217,4,41,0.6)]"
+        className="glass relative rounded-[28px] p-6 shadow-[0_60px_140px_-40px_rgba(217,4,41,0.3)]"
       >
         <div className="flex items-center justify-between">
           <span className="font-mono text-[10px] tracking-[0.2em] text-muted uppercase">Verified today</span>

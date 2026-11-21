@@ -77,10 +77,10 @@ export default function Hero() {
       className="noise relative isolate flex min-h-[100svh] items-center overflow-hidden pt-[var(--nav-h)]"
     >
       {/* Background layers */}
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_70%_40%,rgba(100,10,30,0.45),transparent_55%),radial-gradient(ellipse_at_10%_90%,rgba(217,4,41,0.12),transparent_50%)]" />
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_70%_40%,rgba(100,10,30,0.23),transparent_55%),radial-gradient(ellipse_at_10%_90%,rgba(217,4,41,0.06),transparent_50%)]" />
       <motion.div style={{ y: gridY }} className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[46%] overflow-hidden">
         <div className="floor-grid" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon to-transparent opacity-70 shadow-[0_0_30px_6px_rgba(255,66,101,0.5)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon to-transparent opacity-70 shadow-[0_0_30px_6px_rgba(255,66,101,0.25)]" />
       </motion.div>
 
       <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-[50%] -z-10 hidden lg:block">

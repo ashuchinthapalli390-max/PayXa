@@ -34,7 +34,7 @@ export default async function Overview() {
         title={`${greeting}, ${first}`}
         subtitle="Here's what's moving through CodeXa Agency today."
         actions={
-          <Link href="/dashboard/payments" className="inline-flex h-9 items-center gap-2 rounded-xl bg-crimson px-3.5 text-[13px] font-medium text-white shadow-[0_6px_20px_-8px_rgba(217,4,41,0.8)] hover:bg-[#e8062f]">
+          <Link href="/dashboard/payments" className="inline-flex h-9 items-center gap-2 rounded-xl bg-crimson px-3.5 text-[13px] font-medium text-white shadow-[0_6px_20px_-8px_rgba(217,4,41,0.4)] hover:bg-[#e8062f]">
             View payments <ArrowUpRight size={14} />
           </Link>
         }

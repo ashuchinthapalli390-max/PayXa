@@ -45,7 +45,7 @@ export function LiveFeed() {
             <motion.li
               key={e.id}
               layout
-              initial={{ opacity: 0, y: -12, backgroundColor: "rgba(255,66,101,0.12)" }}
+              initial={{ opacity: 0, y: -12, backgroundColor: "rgba(255,66,101,0.06)" }}
               animate={{ opacity: 1, y: 0, backgroundColor: "rgba(255,66,101,0)" }}
               transition={{ duration: 0.6 }}
               className="flex items-center gap-3 px-5 py-3"

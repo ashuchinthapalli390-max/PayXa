@@ -39,7 +39,7 @@ export function ScanBeam({ duration = 2.2 }: { duration?: number }) {
       transition={{ duration, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
     >
       <span className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent to-neon/35" />
-      <span className="absolute inset-x-0 bottom-0 h-[2px] bg-neon shadow-[0_0_16px_4px_rgba(255,66,101,0.8)]" />
+      <span className="absolute inset-x-0 bottom-0 h-[2px] bg-neon shadow-[0_0_16px_4px_rgba(255,66,101,0.4)]" />
     </motion.span>
   );
 }

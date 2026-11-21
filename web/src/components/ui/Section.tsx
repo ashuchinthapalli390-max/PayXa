@@ -58,7 +58,7 @@ export function SandboxBadge({ className = "" }: { className?: string }) {
 export function PhoneFrame({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
-      className={`relative mx-auto aspect-[9/19] w-full max-w-[300px] rounded-[44px] border border-white/10 bg-gradient-to-b from-[#1c1a20] to-[#0b0a0d] p-[10px] shadow-[0_40px_120px_-30px_rgba(217,4,41,0.45),inset_0_0_0_1px_rgba(255,255,255,0.04)] ${className}`}
+      className={`relative mx-auto aspect-[9/19] w-full max-w-[300px] rounded-[44px] border border-white/10 bg-gradient-to-b from-[#1c1a20] to-[#0b0a0d] p-[10px] shadow-[0_40px_120px_-30px_rgba(217,4,41,0.23),inset_0_0_0_1px_rgba(255,255,255,0.04)] ${className}`}
     >
       <div className="absolute top-[18%] -left-[3px] h-12 w-[3px] rounded-l bg-white/10" />
       <div className="absolute top-[28%] -left-[3px] h-16 w-[3px] rounded-l bg-white/10" />

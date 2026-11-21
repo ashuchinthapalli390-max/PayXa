@@ -64,12 +64,12 @@ export default function ZoomStatement() {
           className="display text-[clamp(72px,19vw,300px)] leading-none will-change-transform"
         >
           PAY
-          <span ref={x} className="inline-block text-crimson [text-shadow:0_0_60px_rgba(255,66,101,0.6)]">
+          <span ref={x} className="inline-block text-crimson [text-shadow:0_0_30px_rgba(255,66,101,0.2)]">
             X
           </span>
           A
         </motion.div>
-        <motion.div style={{ opacity: flood }} className="pointer-events-none absolute inset-0 bg-crimson" />
+        <motion.div style={{ opacity: flood }} className="pointer-events-none absolute inset-0 bg-[#8c0a1f]" />
         <motion.div style={{ opacity: finalOpacity, y: finalY }} className="absolute inset-x-0 px-4 text-center">
           <div className="display text-[clamp(34px,6vw,84px)] text-white">
             Checkout to <span className="text-ink">verified</span>

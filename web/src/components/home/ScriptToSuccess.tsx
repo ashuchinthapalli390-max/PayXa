@@ -66,7 +66,7 @@ function Screen({ step }: { step: number }) {
           </div>
         </div>
         <motion.div
-          animate={step === 0 ? { scale: [1, 1.04, 1], boxShadow: ["0 0 0 0 rgba(255,66,101,0.6)", "0 0 0 10px rgba(255,66,101,0)", "0 0 0 0 rgba(255,66,101,0)"] } : {}}
+          animate={step === 0 ? { scale: [1, 1.04, 1], boxShadow: ["0 0 0 0 rgba(255,66,101,0.3)", "0 0 0 10px rgba(255,66,101,0)", "0 0 0 0 rgba(255,66,101,0)"] } : {}}
           transition={{ duration: 1.6, repeat: Infinity }}
           className="mt-6 flex h-11 items-center justify-center gap-2 rounded-full bg-crimson text-[12px] font-semibold tracking-wider text-white uppercase"
         >
@@ -102,7 +102,7 @@ function Screen({ step }: { step: number }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease }}
             style={{ transformPerspective: 900 }}
-            className="absolute inset-x-6 top-6 bottom-6 rounded-2xl border border-white/10 bg-[#0c0b0f] p-5 shadow-[0_30px_80px_-20px_rgba(217,4,41,0.6)]"
+            className="absolute inset-x-6 top-6 bottom-6 rounded-2xl border border-white/10 bg-[#0c0b0f] p-5 shadow-[0_30px_80px_-20px_rgba(217,4,41,0.3)]"
           >
             <div className="flex items-center justify-between">
               <span className="text-[12px] font-semibold">CodeXa Agency</span>
@@ -195,7 +195,7 @@ export default function ScriptToSuccess() {
             <div className="mt-6 flex gap-2">
               {steps.map((s, i) => (
                 <div key={s.title} className="h-1 flex-1 overflow-hidden rounded-full bg-white/10">
-                  <motion.div className="h-full bg-crimson shadow-[0_0_10px_#ff4265]" animate={{ width: i <= step ? "100%" : "0%" }} transition={{ duration: 0.5 }} />
+                  <motion.div className="h-full bg-crimson shadow-[0_0_10px_rgba(255,66,101,0.3)]" animate={{ width: i <= step ? "100%" : "0%" }} transition={{ duration: 0.5 }} />
                 </div>
               ))}
             </div>
@@ -216,7 +216,7 @@ export default function ScriptToSuccess() {
                     return (
                       <div
                         key={i}
-                        className={`-mx-4 px-4 transition-all duration-500 ${on ? "bg-crimson/10 opacity-100 shadow-[inset_2px_0_0_#ff4265]" : "opacity-30"}`}
+                        className={`-mx-4 px-4 transition-all duration-500 ${on ? "bg-crimson/10 opacity-100 shadow-[inset_2px_0_0_rgba(255,66,101,0.3)]" : "opacity-30"}`}
                       >
                         <span className="whitespace-pre">{highlight(line) }</span>
                         {"​"}
@@ -233,8 +233,8 @@ export default function ScriptToSuccess() {
           </div>
 
           <motion.div style={reduce ? undefined : { rotateY: rotY, rotateX: rotX, transformPerspective: 1600 }} className="relative">
-            <div className="absolute -inset-10 -z-10 rounded-full bg-crimson/20 blur-[90px]" />
-            <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-[0_50px_140px_-30px_rgba(217,4,41,0.55)]">
+            <div className="absolute -inset-10 -z-10 rounded-full bg-crimson/10 blur-[90px]" />
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-[0_50px_140px_-30px_rgba(217,4,41,0.28)]">
               <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2.5">
                 <span className="size-2.5 rounded-full bg-crimson" />
                 <span className="size-2.5 rounded-full bg-white/15" />
@@ -245,7 +245,7 @@ export default function ScriptToSuccess() {
                 <Screen step={step} />
               </div>
             </div>
-            <motion.div style={{ scaleX: bar }} className="mt-4 h-px origin-left bg-gradient-to-r from-crimson to-hot" />
+            <motion.div style={{ scaleX: bar }} className="mt-4 h-px origin-left bg-gradient-to-r from-crimson to-neon" />
           </motion.div>
         </div>
       </div>

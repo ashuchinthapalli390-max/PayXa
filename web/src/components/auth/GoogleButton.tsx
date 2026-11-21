@@ -21,7 +21,7 @@ export function GoogleSubmit({ label, disabled = false }: { label: string; disab
     <button
       type="submit"
       disabled={disabled || pending}
-      className="group relative flex h-14 w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-white text-[15px] font-semibold text-[#1f1f1f] shadow-[0_10px_40px_-12px_rgba(255,255,255,0.35)] transition-all hover:shadow-[0_14px_50px_-10px_rgba(255,66,101,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
+      className="group relative flex h-14 w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-white text-[15px] font-semibold text-[#1f1f1f] shadow-[0_10px_40px_-12px_rgba(255,255,255,0.35)] transition-all hover:shadow-[0_14px_50px_-10px_rgba(255,66,101,0.28)] disabled:cursor-not-allowed disabled:opacity-60"
     >
       <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
       {pending ? <Loader2 size={18} className="animate-spin" /> : <GoogleG />}

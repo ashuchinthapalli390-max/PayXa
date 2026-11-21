@@ -30,7 +30,7 @@ export default function TickerBand() {
     <section ref={ref} aria-label="PayXa capabilities" className="relative z-10 overflow-hidden py-20">
       <motion.div
         style={{ rotate: rotA, x: xA }}
-        className="relative z-10 -mx-[10%] w-[120%] border-y border-neon/50 bg-crimson py-4 text-white shadow-[0_0_60px_-10px_rgba(217,4,41,0.8)]"
+        className="relative z-10 -mx-[10%] w-[120%] border-y border-neon/50 bg-crimson py-4 text-white shadow-[0_0_60px_-10px_rgba(217,4,41,0.4)]"
       >
         <Marquee duration={36}>
           {words.map((w) => (

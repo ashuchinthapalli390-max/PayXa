@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className="relative z-10 overflow-hidden border-t border-white/[0.06]" data-scene="payxa" data-side="center">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/70 to-ink" />
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,transparent,black_40%,black)]" />
-      <div className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[900px] -translate-x-1/2 rounded-full bg-crimson/20 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[900px] -translate-x-1/2 rounded-full bg-crimson/10 blur-[120px]" />
 
       <div className="container-px relative pt-20 pb-10">
         <div className="grid grid-cols-1 [&>*]:min-w-0 gap-12 lg:grid-cols-[1.2fr_2fr]">
@@ -57,7 +57,7 @@ export default function Footer() {
         {/* Giant outline wordmark */}
         <div aria-hidden className="relative mt-20 select-none">
           <div className="display text-stroke text-center text-[22vw] leading-[0.8] tracking-[-0.04em] lg:text-[17vw]">
-            PAY<span className="[-webkit-text-stroke:1px_rgba(255,66,101,0.7)]">X</span>A
+            PAY<span className="[-webkit-text-stroke:1px_rgba(255,66,101,0.35)]">X</span>A
           </div>
         </div>
 

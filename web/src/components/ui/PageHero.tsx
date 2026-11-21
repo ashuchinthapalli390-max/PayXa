@@ -37,7 +37,7 @@ export default function PageHero({
       data-side={side}
       className="noise relative flex min-h-[86svh] items-center overflow-hidden pt-[calc(var(--nav-h)+48px)] pb-20 lg:pb-28"
     >
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_30%,rgba(100,10,30,0.4),transparent_55%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_30%,rgba(100,10,30,0.2),transparent_55%)]" />
       <div className="grid-bg pointer-events-none absolute inset-0 -z-10 opacity-30 [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_70%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[38%] overflow-hidden opacity-70">
         <div className="floor-grid" />

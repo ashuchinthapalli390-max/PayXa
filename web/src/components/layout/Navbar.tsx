@@ -97,7 +97,7 @@ export default function Navbar() {
                   {isActive(item.href) && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute inset-x-3.5 -bottom-[3px] h-px bg-crimson shadow-[0_0_10px_#ff4265]"
+                      className="absolute inset-x-3.5 -bottom-[3px] h-px bg-crimson shadow-[0_0_10px_rgba(255,66,101,0.3)]"
                     />
                   )}
                 </Link>

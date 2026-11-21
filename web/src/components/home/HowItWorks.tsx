@@ -76,7 +76,7 @@ export default function HowItWorks() {
             description="From sign-up to verified payments. Scroll through the flow."
           />
           <div className="mt-10 hidden h-px w-full overflow-hidden bg-white/10 lg:block">
-            <div ref={bar} className="h-full origin-left scale-x-0 bg-gradient-to-r from-crimson to-hot shadow-[0_0_12px_#ff4265]" />
+            <div ref={bar} className="h-full origin-left scale-x-0 bg-gradient-to-r from-crimson to-neon shadow-[0_0_12px_rgba(255,66,101,0.3)]" />
           </div>
         </div>
 
@@ -92,10 +92,10 @@ export default function HowItWorks() {
               data-step
               className="group relative flex gap-5 pl-0 lg:block lg:w-[360px] lg:shrink-0"
             >
-              <span className="relative z-10 grid size-12 shrink-0 place-items-center rounded-full border border-white/15 bg-ink font-mono text-[12px] text-muted transition-all duration-500 group-data-[active]:border-crimson group-data-[active]:bg-crimson group-data-[active]:text-white group-data-[active]:shadow-[0_0_24px_rgba(255,66,101,0.6)] lg:hidden">
+              <span className="relative z-10 grid size-12 shrink-0 place-items-center rounded-full border border-white/15 bg-ink font-mono text-[12px] text-muted transition-all duration-500 group-data-[active]:border-crimson group-data-[active]:bg-crimson group-data-[active]:text-white group-data-[active]:shadow-[0_0_24px_rgba(255,66,101,0.3)] lg:hidden">
                 0{i + 1}
               </span>
-              <div className="card flex-1 p-7 transition-[border-color,transform,box-shadow] duration-700 group-data-[active]:border-crimson/50 group-data-[active]:shadow-[0_30px_80px_-40px_rgba(217,4,41,0.8)] lg:h-[340px] lg:p-9">
+              <div className="card flex-1 p-7 transition-[border-color,transform,box-shadow] duration-700 group-data-[active]:border-crimson/50 group-data-[active]:shadow-[0_30px_80px_-40px_rgba(217,4,41,0.4)] lg:h-[340px] lg:p-9">
                 <div className="flex items-center justify-between">
                   <s.icon size={26} className="text-dim transition-colors duration-500 group-data-[active]:text-neon" />
                   <span className="hidden font-display text-6xl font-bold text-white/[0.05] transition-colors duration-700 group-data-[active]:text-crimson/30 lg:block">

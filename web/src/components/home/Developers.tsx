@@ -26,7 +26,7 @@ export function CodeWindow({ className = "" }: { className?: string }) {
     }
   };
   return (
-    <div className={`card overflow-hidden shadow-[0_40px_120px_-40px_rgba(217,4,41,0.5)] ${className}`}>
+    <div className={`card overflow-hidden shadow-[0_40px_120px_-40px_rgba(217,4,41,0.25)] ${className}`}>
       <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-3">
         <span className="size-2.5 rounded-full bg-crimson" />
         <span className="size-2.5 rounded-full bg-white/15" />
@@ -34,7 +34,7 @@ export function CodeWindow({ className = "" }: { className?: string }) {
         <span className="ml-3 font-mono text-[11px] text-dim">{s.file}</span>
         <button
           onClick={() => openCheckout()}
-          className="ml-auto flex items-center gap-1.5 rounded-md bg-crimson px-2.5 py-1 font-mono text-[10px] font-semibold tracking-[0.14em] text-white uppercase shadow-[0_0_14px_rgba(255,66,101,0.5)] transition-transform hover:scale-105"
+          className="ml-auto flex items-center gap-1.5 rounded-md bg-crimson px-2.5 py-1 font-mono text-[10px] font-semibold tracking-[0.14em] text-white uppercase shadow-[0_0_14px_rgba(255,66,101,0.25)] transition-transform hover:scale-105"
         >
           <Play size={11} /> Run
         </button>
@@ -58,7 +58,7 @@ export function CodeWindow({ className = "" }: { className?: string }) {
             }`}
           >
             {x.label}
-            {tab === i && <motion.span layoutId="code-tab" className="absolute inset-x-2 bottom-0 h-[2px] bg-crimson shadow-[0_0_10px_#ff4265]" />}
+            {tab === i && <motion.span layoutId="code-tab" className="absolute inset-x-2 bottom-0 h-[2px] bg-crimson shadow-[0_0_10px_rgba(255,66,101,0.3)]" />}
           </button>
         ))}
       </div>

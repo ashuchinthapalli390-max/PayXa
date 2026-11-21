@@ -95,7 +95,7 @@ function CheckoutPanel({ stage }: { stage: number }) {
       exit={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.7, ease }}
       style={{ transformPerspective: 1000 }}
-      className="absolute inset-x-[6%] top-[6%] bottom-[6%] rounded-2xl border border-white/10 bg-[#0c0b0f] p-5 shadow-[0_30px_100px_-20px_rgba(217,4,41,0.6)]"
+      className="absolute inset-x-[6%] top-[6%] bottom-[6%] rounded-2xl border border-white/10 bg-[#0c0b0f] p-5 shadow-[0_30px_100px_-20px_rgba(217,4,41,0.3)]"
     >
       <div className="flex items-center justify-between">
         <span className="text-[13px] font-semibold">CodeXa Agency</span>
@@ -267,8 +267,8 @@ export default function CheckoutExperience() {
               <Caption stage={stage} />
             </div>
             <motion.div style={reduce ? undefined : { rotateX: frameRot, scale: frameScale, transformPerspective: 1600 }} className="relative">
-              <div className="absolute -inset-8 -z-10 rounded-full bg-crimson/15 blur-[90px]" />
-              <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink/95 shadow-[0_50px_140px_-30px_rgba(217,4,41,0.55)]">
+              <div className="absolute -inset-8 -z-10 rounded-full bg-crimson/[0.07] blur-[90px]" />
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink/95 shadow-[0_50px_140px_-30px_rgba(217,4,41,0.28)]">
                 <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2.5">
                   <span className="size-2.5 rounded-full bg-crimson" />
                   <span className="size-2.5 rounded-full bg-white/15" />
@@ -292,7 +292,7 @@ export default function CheckoutExperience() {
               <AnimatePresence>{(stage === 2 || stage === 3) && <CustomerPhone key="cp" p={p} stage={stage} />}</AnimatePresence>
             </motion.div>
             <div className="mt-6 h-1 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full origin-left bg-gradient-to-r from-crimson to-hot shadow-[0_0_10px_#ff4265]" style={{ transform: `scaleX(${p})` }} />
+              <div className="h-full origin-left bg-gradient-to-r from-crimson to-neon shadow-[0_0_10px_rgba(255,66,101,0.3)]" style={{ transform: `scaleX(${p})` }} />
             </div>
           </div>
 

@@ -111,11 +111,9 @@ html.lenis body {
   color: var(--color-muted);
 }
 
+/* Classic accent: solid brand red (kept as a utility name for existing markup). */
 @utility text-gradient-red {
-  background: linear-gradient(100deg, #ff9db6 0%, var(--color-neon) 35%, var(--color-crimson) 75%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #e8213f;
 }
 
 @utility text-stroke {
@@ -144,8 +142,8 @@ html.lenis body {
 
 @utility grid-bg {
   background-image:
-    linear-gradient(rgba(217, 4, 41, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(217, 4, 41, 0.09) 1px, transparent 1px);
+    linear-gradient(rgba(217, 4, 41, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217, 4, 41, 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
@@ -177,7 +175,7 @@ html.lenis body {
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: radial-gradient(260px circle at var(--mx) var(--my), rgba(255, 66, 101, 0.75), transparent 60%);
+    background: radial-gradient(260px circle at var(--mx) var(--my), rgba(255, 66, 101, 0.35), transparent 60%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -219,22 +217,17 @@ html.lenis body {
 @utility btn-primary {
   background: var(--color-crimson);
   color: #fff;
-  box-shadow:
-    0 0 0 1px rgba(255, 66, 101, 0.55) inset,
-    0 8px 30px -10px rgba(217, 4, 41, 0.8);
+  box-shadow: 0 6px 18px -10px rgba(217, 4, 41, 0.45);
   &:hover {
-    background: #e8062f;
-    box-shadow:
-      0 0 0 1px rgba(255, 120, 160, 0.8) inset,
-      0 0 28px rgba(255, 66, 101, 0.55),
-      0 10px 40px -8px rgba(217, 4, 41, 0.9);
+    background: #c40425;
+    box-shadow: 0 8px 22px -10px rgba(217, 4, 41, 0.55);
   }
   &::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.12) 50%, transparent 65%);
     transform: translateX(-120%);
     transition: transform 0.8s var(--ease-out-expo);
   }
@@ -250,7 +243,7 @@ html.lenis body {
   &:hover {
     border-color: var(--color-neon);
     color: #fff;
-    box-shadow: 0 0 22px -4px rgba(255, 66, 101, 0.5);
+    box-shadow: none;
   }
 }
 
@@ -383,8 +376,8 @@ html:has(#payxa-intro) {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 45% at 50% 48%, rgba(217, 4, 41, 0.32), transparent 70%),
-    radial-gradient(ellipse 30% 20% at 50% 50%, rgba(255, 66, 101, 0.18), transparent 70%);
+    radial-gradient(ellipse 60% 45% at 50% 48%, rgba(217, 4, 41, 0.16), transparent 70%),
+    radial-gradient(ellipse 30% 20% at 50% 50%, rgba(255, 66, 101, 0.08), transparent 70%);
   opacity: 0;
   animation: intro-fade-in 1.2s ease-out 0.4s forwards;
 }
@@ -427,7 +420,7 @@ html:has(#payxa-intro) {
   top: 52%;
   height: 1px;
   background: linear-gradient(90deg, transparent, #ff4265 30%, #fff 50%, #ff4265 70%, transparent);
-  box-shadow: 0 0 24px 4px rgba(255, 66, 101, 0.55);
+  box-shadow: 0 0 14px 2px rgba(255, 66, 101, 0.3);
   transform: scaleX(0);
   animation: intro-draw-x 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 }
@@ -596,7 +589,7 @@ html:has(#payxa-intro) {
   bottom: 9vh;
   z-index: 4;
   height: 2px;
-  background: linear-gradient(90deg, #640a1e, #d90429, #ff78a0);
+  background: #d90429;
   box-shadow: 0 0 12px rgba(255, 66, 101, 0.7);
   transform: scaleX(0);
   transform-origin: left;
@@ -611,8 +604,8 @@ html:has(#payxa-intro) {
   z-index: 5;
   background: #fff;
   box-shadow:
-    0 0 40px 10px rgba(255, 66, 101, 0.9),
-    0 0 120px 30px rgba(217, 4, 41, 0.6);
+    0 0 30px 6px rgba(255, 66, 101, 0.5),
+    0 0 80px 20px rgba(217, 4, 41, 0.3);
   opacity: 0;
   transform: scaleX(0);
   animation: intro-flash 0.45s ease-out 3.95s forwards;
@@ -839,8 +832,8 @@ html:has(#payxa-intro) {
   transform: perspective(500px) rotateX(62deg);
   transform-origin: bottom center;
   background-image:
-    linear-gradient(rgba(255, 50, 80, 0.45) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 50, 80, 0.45) 1px, transparent 1px);
+    linear-gradient(rgba(255, 50, 80, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 50, 80, 0.18) 1px, transparent 1px);
   background-size: 64px 56px;
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 85%);
   -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 85%);

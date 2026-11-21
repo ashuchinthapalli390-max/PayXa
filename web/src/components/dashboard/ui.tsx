@@ -78,7 +78,7 @@ export function Btn({ children, variant = "ghost", className = "", ...rest }: { 
     <button
       {...rest}
       className={`inline-flex h-9 items-center gap-2 rounded-xl px-3.5 text-[13px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
-        variant === "primary" ? "bg-crimson text-white hover:bg-[#e8062f] shadow-[0_6px_20px_-8px_rgba(217,4,41,0.8)]" : "border border-white/10 text-paper hover:border-white/20 hover:bg-white/[0.03]"
+        variant === "primary" ? "bg-crimson text-white hover:bg-[#e8062f] shadow-[0_6px_20px_-8px_rgba(217,4,41,0.4)]" : "border border-white/10 text-paper hover:border-white/20 hover:bg-white/[0.03]"
       } ${className}`}
     >
       {children}

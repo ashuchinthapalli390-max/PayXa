@@ -27,7 +27,7 @@ export default function Pricing({ index = "11" }: { index?: string }) {
 
         <div className="mx-auto mt-16 grid grid-cols-1 [&>*]:min-w-0 max-w-5xl gap-6 lg:grid-cols-[1.4fr_1fr]">
           <ScrollTilt>
-            <div className="relative overflow-hidden rounded-[24px] border border-crimson/40 bg-gradient-to-b from-crimson/[0.12] via-surface to-surface p-8 shadow-[0_40px_120px_-40px_rgba(217,4,41,0.8)] sm:p-10">
+            <div className="relative overflow-hidden rounded-[24px] border border-crimson/40 bg-gradient-to-b from-crimson/[0.12] via-surface to-surface p-8 shadow-[0_40px_120px_-40px_rgba(217,4,41,0.4)] sm:p-10">
               <div className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full border border-crimson/30" />
               <div className="pointer-events-none absolute -top-10 -right-10 size-44 rounded-full border border-crimson/20" />
               <div className="flex items-center justify-between">

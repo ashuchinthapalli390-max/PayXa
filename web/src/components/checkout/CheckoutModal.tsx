@@ -77,7 +77,7 @@ export default function CheckoutModal() {
             exit={{ y: 40, rotateX: 10, scale: 0.96, opacity: 0 }}
             transition={{ duration: 0.6, ease }}
             style={{ transformPerspective: 1400 }}
-            className="relative max-h-[94svh] w-full max-w-[440px] overflow-y-auto rounded-t-[28px] border border-white/10 bg-[#0c0b0f] shadow-[0_40px_140px_-30px_rgba(217,4,41,0.7)] sm:rounded-[28px]"
+            className="relative max-h-[94svh] w-full max-w-[440px] overflow-y-auto rounded-t-[28px] border border-white/10 bg-[#0c0b0f] shadow-[0_40px_140px_-30px_rgba(217,4,41,0.35)] sm:rounded-[28px]"
             data-lenis-prevent
           >
             {/* Header */}

@@ -33,14 +33,14 @@ export default function FinalCTA() {
       <div className={`${reduce ? "" : "sticky top-0"} h-[100svh] overflow-hidden`}>
         <motion.div
           style={reduce ? undefined : { clipPath: clip }}
-          className="noise absolute inset-0 grid place-items-center overflow-hidden bg-gradient-to-br from-crimson/95 via-[#a3031f]/90 to-crimson-deep/95"
+          className="noise absolute inset-0 grid place-items-center overflow-hidden bg-gradient-to-b from-[#9c0820] to-[#5c0616]"
         >
           <motion.div style={reduce ? undefined : { scale: bgScale }} className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-            <motion.div style={reduce ? undefined : { rotate: orbitRot }} className="absolute -right-40 -bottom-40 size-[620px] opacity-40 mix-blend-screen">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
+            <motion.div style={reduce ? undefined : { rotate: orbitRot }} className="absolute -right-40 -bottom-40 size-[620px] opacity-20 mix-blend-screen">
               <OrbitFallback className="size-full" />
             </motion.div>
-            <motion.div style={reduce ? undefined : { rotate: orbitRot }} className="absolute -top-48 -left-48 size-[520px] opacity-25 mix-blend-screen">
+            <motion.div style={reduce ? undefined : { rotate: orbitRot }} className="absolute -top-48 -left-48 size-[520px] opacity-[0.12] mix-blend-screen">
               <OrbitFallback className="size-full" />
             </motion.div>
           </motion.div>

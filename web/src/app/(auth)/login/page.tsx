@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import AuthShell from "@/components/ui/AuthShell";
 import { getSession, googleEnabled, testLoginEnabled } from "@/auth";
+import { resolveCallback } from "@/lib/dashboard-url";
 
 export const metadata: Metadata = { title: "Log in" };
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ callbackUrl?: string; error?: string }> }) {
   const { callbackUrl, error } = await searchParams;
+  // Only same-site paths or the dashboard subdomain are allowed (no open redirects).
+  const cb = resolveCallback(callbackUrl);
   const session = await getSession();
-  if (session?.user) redirect("/dashboard");
-  const cb = callbackUrl && callbackUrl.startsWith("/") && !callbackUrl.startsWith("//") ? callbackUrl : "/dashboard";
+  if (session?.user) redirect(cb);
   return <AuthShell mode="login" googleEnabled={googleEnabled} testLoginEnabled={testLoginEnabled} callbackUrl={cb} error={error} />;
 }

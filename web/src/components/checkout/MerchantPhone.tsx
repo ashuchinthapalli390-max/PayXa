@@ -31,7 +31,7 @@ export default function MerchantPhone({ className = "" }: { className?: string }
 
   return (
     <PhoneFrame className={className}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(217,4,41,0.35),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(217,4,41,0.18),transparent_60%)]" />
       <div className="relative">
         <StatusBar />
         <div className="px-5 pt-6">

@@ -31,7 +31,7 @@ const features = [
       <div className="flex items-center justify-between font-mono text-[11px] text-muted">
         <span className="rounded-lg border border-white/10 px-3 py-2">Customer</span>
         <span className="relative mx-3 h-px flex-1 bg-gradient-to-r from-white/10 via-neon to-white/10">
-          <span className="absolute -top-[3px] left-1/2 size-[7px] rounded-full bg-neon shadow-[0_0_10px_#ff4265]" />
+          <span className="absolute -top-[3px] left-1/2 size-[7px] rounded-full bg-neon shadow-[0_0_10px_rgba(255,66,101,0.3)]" />
         </span>
         <span className="rounded-lg border border-crimson/50 px-3 py-2 text-paper">Your bank</span>
       </div>
@@ -91,7 +91,7 @@ export default function WhyPayxa() {
               key={f.title}
               className="card noise overflow-hidden bg-[linear-gradient(160deg,#1a171d,#0b0a0d)] p-8 shadow-[0_-30px_80px_-40px_rgba(0,0,0,0.9)] sm:p-10"
             >
-              <div className="pointer-events-none absolute -top-24 -right-24 size-64 rounded-full bg-crimson/15 blur-[70px]" />
+              <div className="pointer-events-none absolute -top-24 -right-24 size-64 rounded-full bg-crimson/[0.07] blur-[70px]" />
               <div className="relative flex items-start justify-between">
                 <span className="grid size-14 place-items-center rounded-2xl border border-crimson/30 bg-crimson/10 text-neon">
                   <f.icon size={24} />

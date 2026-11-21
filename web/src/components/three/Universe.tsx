@@ -9,7 +9,6 @@ import { getQr } from "@/lib/qr";
 
 const CRIMSON = new THREE.Color("#d90429");
 const NEON = new THREE.Color("#ff4265");
-const HOT = new THREE.Color("#ff9db6");
 
 function dotTexture() {
   const c = document.createElement("canvas");
@@ -261,8 +260,8 @@ function Particles({ count }: { count: number }) {
       const r = Math.random();
       sizes[i] = 0.45 + Math.random() * Math.random() * 1.6;
       sp[i] = 0.55 + Math.random() * 1.1;
-      c.copy(r < 0.55 ? CRIMSON : r < 0.85 ? NEON : HOT);
-      if (r > 0.95) c.set("#ffffff");
+      c.copy(r < 0.72 ? CRIMSON : NEON);
+      if (r > 0.97) c.set("#f2e9eb");
       colors.set([c.r, c.g, c.b], i * 3);
       const u = Math.random() * Math.PI * 2;
       const v = Math.acos(2 * Math.random() - 1);
@@ -348,7 +347,7 @@ function Particles({ count }: { count: number }) {
 
     const centerDim = s.side === "center" && !isTunnel && s.shape !== "payxa" && s.shape !== "check" ? 0.55 : 1;
     const u = mat.uniforms;
-    u.uOpacity.value = damp(u.uOpacity.value, (mobile ? 0.55 : 0.92) * centerDim, 3, dt);
+    u.uOpacity.value = damp(u.uOpacity.value, (mobile ? 0.45 : 0.72) * centerDim, 3, dt);
     u.uStretch.value = damp(u.uStretch.value, vel * 0.012 + burst.current * 0.6, 4, dt);
     u.uTime.value = t;
     u.uSize.value = damp(u.uSize.value, (sizeMul[s.shape] ?? 1) * 48, 3, dt);
@@ -396,7 +395,7 @@ function Streams({ sprite, count }: { sprite: THREE.Texture; count: number }) {
   });
   return (
     <points geometry={geo} frustumCulled={false}>
-      <pointsMaterial ref={mat} size={0.09} map={sprite} color={HOT} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+      <pointsMaterial ref={mat} size={0.09} map={sprite} color={NEON} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
     </points>
   );
 }
@@ -472,7 +471,7 @@ export default function Universe() {
       <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0, 7.2], fov: 42 }} gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}>
         <World />
       </Canvas>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(1,1,1,0.55)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(1,1,1,0.7)_100%)]" />
     </div>
   );
 }

@@ -321,7 +321,7 @@ export default function AppPreview() {
             {pinned ? (
               <div className="mx-auto mt-6 flex max-w-xs gap-1.5">
                 {scrollSteps.map((s, i) => (
-                  <span key={s.screen} className={`h-1 flex-1 rounded-full transition-colors duration-500 ${i <= step ? "bg-crimson shadow-[0_0_8px_#ff4265]" : "bg-white/10"}`} />
+                  <span key={s.screen} className={`h-1 flex-1 rounded-full transition-colors duration-500 ${i <= step ? "bg-crimson shadow-[0_0_8px_rgba(255,66,101,0.3)]" : "bg-white/10"}`} />
                 ))}
               </div>
             ) : (
@@ -352,7 +352,7 @@ function AlertButton({
         onClick={onClick}
         aria-pressed={active}
         className={`group w-full rounded-2xl border p-5 text-left transition-all duration-500 ${
-          active ? "border-crimson/50 bg-crimson/[0.07] shadow-[0_20px_60px_-30px_rgba(217,4,41,0.9)]" : "border-white/[0.06] bg-surface/50 hover:border-white/15"
+          active ? "border-crimson/50 bg-crimson/[0.07] shadow-[0_20px_60px_-30px_rgba(217,4,41,0.45)]" : "border-white/[0.06] bg-surface/50 hover:border-white/15"
         }`}
       >
         <div className={`flex items-center gap-2 text-[14px] font-semibold ${a.tone}`}>

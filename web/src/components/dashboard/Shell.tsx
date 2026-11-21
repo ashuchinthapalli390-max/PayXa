@@ -67,7 +67,7 @@ function SidebarNav({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?
                       on ? "bg-white/[0.06] text-paper" : "text-muted hover:bg-white/[0.03] hover:text-paper"
                     } ${collapsed ? "justify-center" : ""}`}
                   >
-                    {on && <motion.span layoutId="dash-active" className="absolute inset-y-2 left-0 w-[3px] rounded-r bg-crimson shadow-[0_0_10px_#ff4265]" />}
+                    {on && <motion.span layoutId="dash-active" className="absolute inset-y-2 left-0 w-[3px] rounded-r bg-crimson shadow-[0_0_10px_rgba(255,66,101,0.3)]" />}
                     <it.icon size={18} className={on ? "text-neon" : "text-dim group-hover:text-muted"} />
                     {!collapsed && <span className="flex-1">{it.label}</span>}
                     {!collapsed && it.badge && (
@@ -153,7 +153,7 @@ function NotificationBell() {
     <div ref={ref} className="relative">
       <button onClick={() => setOpen((v) => !v)} aria-label="Notifications" className="relative grid size-9 place-items-center rounded-full text-muted hover:bg-white/[0.05] hover:text-paper">
         <Bell size={18} />
-        <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-neon shadow-[0_0_8px_#ff4265]" />
+        <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-neon shadow-[0_0_8px_rgba(255,66,101,0.3)]" />
       </button>
       <AnimatePresence>
         {open && (
