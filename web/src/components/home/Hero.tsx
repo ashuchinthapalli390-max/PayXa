@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, BellRing, CheckCircle2, Radar, ShoppingBag } from "lucide-react";
 import { SplitReveal } from "@/components/fx/Reveal";
 import { useCheckout } from "@/components/checkout/CheckoutProvider";
+import { useIntroDone } from "@/components/fx/IntroLoader";
 import { Magnetic, Scramble } from "@/components/fx/Interactive";
 
 const events = [
@@ -62,6 +63,7 @@ function EventCards() {
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { openCheckout } = useCheckout();
+  const ready = useIntroDone();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -160]);
   const contentRot = useTransform(scrollYProgress, [0, 1], [0, 22]);
@@ -102,7 +104,7 @@ export default function Hero() {
         <div className="max-w-[720px]">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.8, ease, delay: 0.5 }}
             className="chip mb-8 border-crimson/40 !text-paper"
           >
@@ -113,6 +115,7 @@ export default function Hero() {
           <SplitReveal
             as="h1"
             immediate
+            hold={!ready}
             delay={0.55}
             text={"Payments.\nWithout the wait."}
             className="display text-[clamp(42px,7.2vw,100px)]"
@@ -121,7 +124,7 @@ export default function Hero() {
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.9, ease, delay: 1.05 }}
             className="mt-8 max-w-[540px] text-[17px] leading-relaxed text-muted sm:text-lg"
           >
@@ -131,7 +134,7 @@ export default function Hero() {
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.9, ease, delay: 1.2 }}
             className="mt-10 flex flex-wrap items-center gap-3"
           >
@@ -149,7 +152,7 @@ export default function Hero() {
 
           <motion.dl
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={ready ? { opacity: 1 } : undefined}
             transition={{ duration: 1, delay: 1.5 }}
             className="mt-12 grid max-w-[560px] grid-cols-3 gap-6 border-t border-white/[0.08] pt-6"
           >

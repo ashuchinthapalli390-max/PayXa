@@ -86,7 +86,7 @@ function Visual({ id }: { id: string }) {
     case "checkout":
       return (
         <div className="mx-auto w-full max-w-[300px] rounded-2xl border border-white/10 bg-ink p-5">
-          <div className="text-[12px] text-muted">Paying Aurora Store</div>
+          <div className="text-[12px] text-muted">Paying CodeXa Agency</div>
           <div className="mt-1 font-display text-3xl font-semibold">₹1,299.00</div>
           <ScannerFrame className="mx-auto mt-5 w-[86%]">
             <RealQR />

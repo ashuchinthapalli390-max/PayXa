@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { footerNav } from "@/lib/site";
 import { LogoMark, Wordmark } from "@/components/brand/Logo";
+import { PoweredBy } from "@/components/brand/PoweredBy";
 
 export default function Footer() {
   return (
@@ -60,10 +61,14 @@ export default function Footer() {
           </div>
         </div>
 
+        <div className="mt-12 flex justify-center">
+          <PoweredBy size="lg" />
+        </div>
+
         <div className="mt-10 flex flex-col gap-4 border-t border-white/[0.06] pt-6 text-[12px] text-dim md:flex-row md:items-center md:justify-between">
           <p>
-            © {new Date().getFullYear()} PayXa · CodeXa Agency. PayXa is a payment technology platform in development; it does
-            not hold or settle customer funds.
+            © {new Date().getFullYear()} PayXa · Powered by CodeXa Agency. PayXa is a payment technology platform in development; it
+            does not hold or settle customer funds.
           </p>
           <p className="font-mono tracking-[0.14em] uppercase">Payments. Connected.</p>
         </div>

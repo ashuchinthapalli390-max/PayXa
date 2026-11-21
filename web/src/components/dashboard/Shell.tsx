@@ -207,9 +207,9 @@ export default function Shell({ user, children }: { user: User; children: ReactN
         {!collapsed && (
           <div className="mx-3 mt-4 rounded-xl border border-white/[0.06] bg-surface/60 p-3">
             <div className="flex items-center gap-2.5">
-              <span className="grid size-8 place-items-center rounded-lg bg-paper font-display text-[12px] font-bold text-ink">A</span>
+              <Image src="/brand/codexa-mark.png" alt="" width={32} height={32} className="size-8 rounded-lg ring-1 ring-white/10" />
               <div className="min-w-0">
-                <div className="truncate text-[13px] font-semibold">Aurora Store</div>
+                <div className="truncate text-[13px] font-semibold">CodeXa Agency</div>
                 <div className="font-mono text-[10px] text-dim">merch_test_01</div>
               </div>
             </div>
@@ -225,6 +225,11 @@ export default function Shell({ user, children }: { user: User; children: ReactN
             {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
             {!collapsed && "Collapse"}
           </button>
+          {!collapsed && (
+            <div className="mt-2 text-center font-mono text-[9px] tracking-[0.2em] text-dim uppercase">
+              Powered by <span className="text-muted">Code<span className="text-neon">X</span>a Agency</span>
+            </div>
+          )}
         </div>
       </aside>
 

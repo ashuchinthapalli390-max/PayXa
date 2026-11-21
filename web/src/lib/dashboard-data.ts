@@ -133,10 +133,10 @@ export const deviceList: Device[] = [
 export type PaymentLink = { id: string; title: string; amount: number; url: string; status: "active" | "expired" | "archived"; views: number; started: number; paid: number; expires: string };
 export const linkList: PaymentLink[] = [
   { id: "plink_ws2500", title: "Workshop seat — Dec batch", amount: 250000, url: "pay.payxa.example/l/ws-2500", status: "active", views: 182, started: 64, paid: 41, expires: "30 Nov" },
-  { id: "plink_fee", title: "Monthly coaching fee", amount: 199900, url: "pay.payxa.example/l/coach-fee", status: "active", views: 96, started: 40, paid: 33, expires: "No expiry" },
+  { id: "plink_fee", title: "Monthly website maintenance", amount: 199900, url: "pay.payxa.example/l/coach-fee", status: "active", views: 96, started: 40, paid: 33, expires: "No expiry" },
   { id: "plink_inv1043", title: "Invoice #1043 · Design retainer", amount: 1800000, url: "pay.payxa.example/l/inv-1043", status: "active", views: 4, started: 1, paid: 0, expires: "25 Nov" },
-  { id: "plink_diwali", title: "Diwali hamper pre-order", amount: 149900, url: "pay.payxa.example/l/hamper", status: "expired", views: 412, started: 151, paid: 118, expires: "Ended 3 Nov" },
-  { id: "plink_old", title: "Event pass (old)", amount: 49900, url: "pay.payxa.example/l/pass", status: "archived", views: 58, started: 12, paid: 9, expires: "—" },
+  { id: "plink_diwali", title: "Brand identity kit — deposit", amount: 149900, url: "pay.payxa.example/l/hamper", status: "expired", views: 412, started: 151, paid: 118, expires: "Ended 3 Nov" },
+  { id: "plink_old", title: "Hackathon pass (old)", amount: 49900, url: "pay.payxa.example/l/pass", status: "archived", views: 58, started: 12, paid: 9, expires: "—" },
 ];
 
 export const webhookDeliveries = [
@@ -162,8 +162,8 @@ export const customers = (() => {
 
 export const team = [
   { name: "Workspace owner", email: "you (signed in)", role: "Owner", last: "now" },
-  { name: "Priya S.", email: "priya@aurora.store", role: "Admin", last: "2h ago" },
-  { name: "Counter staff", email: "counter@aurora.store", role: "Viewer", last: "12m ago" },
+  { name: "Priya S.", email: "priya@codexa-agency.online", role: "Admin", last: "2h ago" },
+  { name: "Counter staff", email: "counter@codexa-agency.online", role: "Viewer", last: "12m ago" },
 ];
 
 export function timelineFor(p: Payment) {

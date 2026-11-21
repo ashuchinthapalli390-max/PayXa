@@ -21,7 +21,7 @@ export default async function PaymentDetail({ params }: { params: Promise<{ id: 
     ["Order", p.order],
     ["Amount", `${formatINR(p.amount)} (${p.amount} paise)`],
     ["Method", p.method],
-    ["Receiving UPI", "aurorastore@payxatest"],
+    ["Receiving UPI", "codexa@payxatest"],
     ["Customer", `${p.customer} · ${p.customerRef}`],
     ["Detected by", p.status === "started" || p.status === "expired" ? "—" : p.device],
     ["UTR", p.status === "started" || p.status === "expired" ? "—" : `••••••${p.utrTail.slice(-4)}`],

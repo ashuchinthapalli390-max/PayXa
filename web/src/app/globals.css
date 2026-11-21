@@ -346,6 +346,450 @@ html.lenis body {
   animation: blink 1s steps(1) infinite;
 }
 
+/* ───────────────── Cinematic intro (see components/fx/IntroLoader.tsx) ───────────────── */
+html:has(#payxa-intro) {
+  overflow: hidden;
+}
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow: hidden;
+  animation: intro-gone 0s linear 5s forwards;
+}
+.intro-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: #010101;
+  will-change: transform;
+}
+.intro-top {
+  top: 0;
+  animation: intro-top-out 0.6s cubic-bezier(0.76, 0, 0.24, 1) 4.4s forwards;
+  box-shadow: 0 1px 0 rgba(255, 66, 101, 0.6);
+}
+.intro-bottom {
+  bottom: 0;
+  animation: intro-bottom-out 0.6s cubic-bezier(0.76, 0, 0.24, 1) 4.4s forwards;
+}
+.intro-stage {
+  position: absolute;
+  inset: 0;
+  animation: intro-fade-out 0.35s ease-in 4.15s forwards;
+}
+.intro-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 48%, rgba(217, 4, 41, 0.32), transparent 70%),
+    radial-gradient(ellipse 30% 20% at 50% 50%, rgba(255, 66, 101, 0.18), transparent 70%);
+  opacity: 0;
+  animation: intro-fade-in 1.2s ease-out 0.4s forwards;
+}
+.intro-floor {
+  position: absolute;
+  inset: 52% 0 0 0;
+  overflow: hidden;
+  opacity: 0;
+  animation: intro-fade-in 1.2s ease-out 0.9s forwards;
+}
+.intro-grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: intro-grain 0.6s steps(4) infinite;
+  pointer-events: none;
+}
+.intro-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #000;
+  z-index: 3;
+  animation: intro-bar-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+.intro-bar-top {
+  top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.intro-bar-bottom {
+  bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.intro-horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 52%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ff4265 30%, #fff 50%, #ff4265 70%, transparent);
+  box-shadow: 0 0 24px 4px rgba(255, 66, 101, 0.55);
+  transform: scaleX(0);
+  animation: intro-draw-x 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+.intro-orbits {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(92vw, 760px);
+  translate: -50% -50%;
+  overflow: visible;
+  animation: intro-spin 14s linear infinite;
+}
+.intro-orbits ellipse,
+.intro-orbits circle:not(.intro-node) {
+  fill: none;
+  stroke: #d90429;
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.7;
+  animation: intro-dash 1.6s cubic-bezier(0.65, 0, 0.35, 1) 1s forwards;
+}
+.intro-orbits circle:not(.intro-node) {
+  stroke: rgba(255, 66, 101, 0.35);
+  animation-delay: 1.3s;
+}
+.intro-node {
+  fill: #fff;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px #ff4265) drop-shadow(0 0 16px #ff4265);
+  animation: intro-fade-in 0.5s ease-out 2.4s forwards;
+}
+.intro-node-2 {
+  animation-delay: 2.6s;
+}
+.intro-center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 4vh;
+  text-align: center;
+}
+.intro-mark {
+  position: relative;
+  width: min(42vw, 230px);
+  overflow: hidden;
+  clip-path: inset(0 100% 0 0);
+  transform: scale(1.25);
+  filter: blur(8px) drop-shadow(0 0 30px rgba(255, 66, 101, 0.6));
+  animation:
+    intro-clip 1s cubic-bezier(0.76, 0, 0.24, 1) 0.9s forwards,
+    intro-settle 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+}
+.intro-sweep {
+  position: absolute;
+  inset: -20% auto -20% 0;
+  width: 35%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+  mix-blend-mode: overlay;
+  transform: translateX(-160%) skewX(-18deg);
+  animation: intro-sweep 0.9s ease-in-out 1.95s forwards;
+}
+.intro-word {
+  margin-top: 22px;
+  display: flex;
+  gap: 0.04em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(44px, 11vw, 120px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #f7f7f7;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.intro-word span {
+  display: inline-block;
+  transform: translateY(110%) rotateX(-70deg);
+  opacity: 0;
+  animation: intro-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.intro-word .is-x {
+  color: #d90429;
+  animation:
+    intro-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    intro-x-flash 1.2s ease-out 2.4s forwards;
+}
+.intro-tagline {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #a5a5aa;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: intro-track 1.1s cubic-bezier(0.16, 1, 0.3, 1) 2.6s forwards;
+}
+.intro-powered {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #6c6a72;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: intro-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.2s forwards;
+}
+.intro-powered strong {
+  color: #f7f7f7;
+  font-weight: 600;
+}
+.intro-rule {
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ff4265);
+}
+.intro-rule:last-child {
+  background: linear-gradient(90deg, #ff4265, transparent);
+}
+.intro-meta {
+  position: absolute;
+  bottom: calc(9vh + 18px);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a5a5aa;
+  opacity: 0;
+  animation: intro-fade-in 0.6s ease-out 0.5s forwards;
+}
+.intro-meta-left {
+  left: clamp(16px, 4vw, 48px);
+}
+.intro-meta-right {
+  right: clamp(16px, 4vw, 48px);
+  font-size: clamp(22px, 3vw, 34px);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+  color: #f7f7f7;
+  font-variant-numeric: tabular-nums;
+}
+.intro-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: #ff4265;
+  box-shadow: 0 0 10px #ff4265;
+  animation: blink 0.8s steps(1) infinite;
+}
+.intro-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9vh;
+  z-index: 4;
+  height: 2px;
+  background: linear-gradient(90deg, #640a1e, #d90429, #ff78a0);
+  box-shadow: 0 0 12px rgba(255, 66, 101, 0.7);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: intro-draw-x 4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+.intro-flash {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  z-index: 5;
+  background: #fff;
+  box-shadow:
+    0 0 40px 10px rgba(255, 66, 101, 0.9),
+    0 0 120px 30px rgba(217, 4, 41, 0.6);
+  opacity: 0;
+  transform: scaleX(0);
+  animation: intro-flash 0.45s ease-out 3.95s forwards;
+}
+.intro-skip {
+  position: absolute;
+  top: calc(9vh + 16px);
+  right: clamp(16px, 4vw, 48px);
+  z-index: 6;
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a5a5aa;
+  background: rgba(1, 1, 1, 0.4);
+  opacity: 0;
+  animation:
+    intro-fade-in 0.5s ease-out 1s forwards,
+    intro-fade-out 0.3s ease-in 4.1s forwards;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.intro-skip:hover {
+  color: #fff;
+  border-color: #ff4265;
+}
+.intro.is-skipping .intro-stage,
+.intro.is-skipping .intro-skip {
+  animation: intro-fade-out 0.3s ease-in forwards;
+}
+.intro.is-skipping .intro-top {
+  animation: intro-top-out 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.12s forwards;
+}
+.intro.is-skipping .intro-bottom {
+  animation: intro-bottom-out 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.12s forwards;
+}
+.intro.is-skipping {
+  animation: intro-gone 0s linear 0.8s forwards;
+}
+
+@keyframes intro-gone {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+@keyframes intro-top-out {
+  to {
+    transform: translateY(-101%);
+  }
+}
+@keyframes intro-bottom-out {
+  to {
+    transform: translateY(101%);
+  }
+}
+@keyframes intro-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes intro-bar-in {
+  to {
+    height: 9vh;
+  }
+}
+@keyframes intro-draw-x {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes intro-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes intro-dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes intro-clip {
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+@keyframes intro-settle {
+  to {
+    transform: scale(1);
+    filter: blur(0) drop-shadow(0 0 24px rgba(255, 66, 101, 0.45));
+  }
+}
+@keyframes intro-sweep {
+  to {
+    transform: translateX(420%) skewX(-18deg);
+  }
+}
+@keyframes intro-rise {
+  to {
+    transform: translateY(0) rotateX(0);
+    opacity: 1;
+  }
+}
+@keyframes intro-x-flash {
+  0% {
+    text-shadow: none;
+  }
+  25% {
+    color: #fff;
+    text-shadow:
+      0 0 30px #ff4265,
+      0 0 80px #d90429;
+  }
+  100% {
+    color: #d90429;
+    text-shadow: 0 0 40px rgba(255, 66, 101, 0.55);
+  }
+}
+@keyframes intro-track {
+  to {
+    opacity: 1;
+    letter-spacing: 0.55em;
+  }
+}
+@keyframes intro-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes intro-flash {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  40% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1) scaleY(18);
+  }
+}
+@keyframes intro-grain {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-4%, 3%);
+  }
+  50% {
+    transform: translate(3%, -5%);
+  }
+  75% {
+    transform: translate(-2%, 4%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro,
+  .intro * {
+    animation-delay: 0s !important;
+  }
+}
+
 /* Route transition wipe (see app/template.tsx) */
 @keyframes wipe-up {
   from {

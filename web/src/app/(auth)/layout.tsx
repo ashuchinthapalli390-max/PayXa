@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import SceneLayer from "@/components/three/SceneLayer";
+import IntroLoader from "@/components/fx/IntroLoader";
 import { Logo } from "@/components/brand/Logo";
+import { PoweredBy } from "@/components/brand/PoweredBy";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <IntroLoader />
       <SceneLayer />
       <header className="fixed inset-x-0 top-0 z-40">
         <div className="container-px flex h-[var(--nav-h)] items-center justify-between">
@@ -18,6 +21,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <main id="main" className="relative z-10">
         {children}
       </main>
+      <div className="relative z-10 flex justify-center pb-8">
+        <PoweredBy />
+      </div>
     </>
   );
 }

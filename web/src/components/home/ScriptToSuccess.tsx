@@ -2,6 +2,8 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef, useState } from "react";
+import Image from "next/image";
+import { MERCHANT } from "@/lib/merchant";
 import { BellRing, Check, Loader2, Play, ShieldCheck, ShoppingBag } from "lucide-react";
 import { highlight } from "@/lib/code";
 import { PatternQR } from "@/components/checkout/CheckoutModal";
@@ -48,14 +50,18 @@ function Screen({ step }: { step: number }) {
       {/* store page always underneath */}
       <div className={`absolute inset-0 p-6 transition-all duration-700 ${step >= 2 ? "scale-95 opacity-30 blur-[2px]" : ""}`}>
         <div className="flex items-center justify-between text-[11px] text-muted">
-          <span className="font-display font-semibold text-paper uppercase">Aurora Store</span>
+          <span className="flex items-center gap-2 font-display font-semibold text-paper uppercase">
+            <Image src={MERCHANT.mark} alt="" width={20} height={20} className="size-5 rounded" /> CodeXa Agency
+          </span>
           <span>Cart · 1</span>
         </div>
         <div className="mt-6 grid grid-cols-[110px_1fr] gap-4">
-          <div className="aspect-square rounded-xl bg-gradient-to-br from-crimson-deep to-surface" />
+          <div className="relative aspect-square overflow-hidden rounded-xl ring-1 ring-white/10">
+            <Image src={MERCHANT.product.image} alt="CodeXa Agency" fill sizes="110px" className="object-cover" />
+          </div>
           <div>
-            <div className="text-[11px] text-muted">Wireless earbuds</div>
-            <div className="font-display text-[15px] font-semibold uppercase">Aurora Buds</div>
+            <div className="text-[11px] text-muted">Web & app development</div>
+            <div className="font-display text-[15px] font-semibold uppercase">Strategy Call</div>
             <div className="mt-3 font-display text-xl font-semibold">₹499.00</div>
           </div>
         </div>
@@ -99,7 +105,7 @@ function Screen({ step }: { step: number }) {
             className="absolute inset-x-6 top-6 bottom-6 rounded-2xl border border-white/10 bg-[#0c0b0f] p-5 shadow-[0_30px_80px_-20px_rgba(217,4,41,0.6)]"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[12px] font-semibold">Aurora Store</span>
+              <span className="text-[12px] font-semibold">CodeXa Agency</span>
               <span className="font-mono text-[10px] text-dim">PXA-20481</span>
             </div>
             <div className="mt-2 font-display text-2xl font-semibold">₹499.00</div>
@@ -233,7 +239,7 @@ export default function ScriptToSuccess() {
                 <span className="size-2.5 rounded-full bg-crimson" />
                 <span className="size-2.5 rounded-full bg-white/15" />
                 <span className="size-2.5 rounded-full bg-white/15" />
-                <span className="ml-3 flex-1 truncate rounded-md bg-white/[0.04] px-3 py-1 font-mono text-[10px] text-dim">https://aurora.store/checkout</span>
+                <span className="ml-3 flex-1 truncate rounded-md bg-white/[0.04] px-3 py-1 font-mono text-[10px] text-dim">https://codexa-agency.online/checkout</span>
               </div>
               <div className="aspect-[4/3.4] sm:aspect-[4/3]">
                 <Screen step={step} />

@@ -7,6 +7,7 @@ import { Check, ChevronRight, Clock, Copy, Loader2, Lock, QrCode, RotateCcw, Shi
 import { formatINR, useCheckout } from "./CheckoutProvider";
 import { getLenis } from "@/components/fx/SmoothScroll";
 import { RealQR, ScannerFrame } from "./RealQR";
+import { MERCHANT } from "@/lib/merchant";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -83,9 +84,11 @@ export default function CheckoutModal() {
             <div className="relative overflow-hidden border-b border-white/[0.06] bg-gradient-to-br from-crimson/25 via-transparent to-transparent px-6 pt-6 pb-5">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="grid size-11 place-items-center rounded-2xl bg-paper font-display text-lg font-bold text-ink">
-                    {order.merchant[0]}
-                  </span>
+                  {order.merchant === MERCHANT.name ? (
+                    <Image src={MERCHANT.mark} alt="" width={44} height={44} className="size-11 rounded-2xl ring-1 ring-white/10" />
+                  ) : (
+                    <span className="grid size-11 place-items-center rounded-2xl bg-paper font-display text-lg font-bold text-ink">{order.merchant[0]}</span>
+                  )}
                   <div>
                     <div className="text-[15px] font-semibold">{order.merchant}</div>
                     <div className="flex items-center gap-1 text-[11px] text-ok">
@@ -198,7 +201,7 @@ export default function CheckoutModal() {
                               <button
                                 onClick={async () => {
                                   try {
-                                    await navigator.clipboard.writeText("aurorastore@payxatest");
+                                    await navigator.clipboard.writeText("codexa@payxatest");
                                     setCopied(true);
                                     window.setTimeout(() => setCopied(false), 1400);
                                   } catch {
@@ -207,7 +210,7 @@ export default function CheckoutModal() {
                                 }}
                                 className="flex w-full items-center justify-between rounded-2xl border border-white/10 px-4 py-3 font-mono text-[12px] text-muted hover:text-paper"
                               >
-                                aurorastore@payxatest
+                                codexa@payxatest
                                 <span className="flex items-center gap-1.5">
                                   {copied ? <Check size={13} className="text-ok" /> : <Copy size={13} />}
                                   {copied ? "Copied" : "Copy UPI ID"}

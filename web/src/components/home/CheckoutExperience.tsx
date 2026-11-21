@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
+import { MERCHANT } from "@/lib/merchant";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { BellRing, Check, Loader2, MousePointer2, Play, Radar, ShieldCheck, ShoppingBag, Star } from "lucide-react";
 import { RealQR, ScannerFrame } from "@/components/checkout/RealQR";
@@ -45,18 +47,19 @@ function Store({ p, stage }: { p: number; stage: number }) {
     <div className="absolute inset-0 p-5 sm:p-7">
       <div className="flex items-center justify-between text-[11px] text-muted">
         <span className="flex items-center gap-2 font-display text-[13px] font-semibold text-paper uppercase">
-          <span className="grid size-6 place-items-center rounded-md bg-paper text-[11px] text-ink">A</span> Aurora Store
+          <Image src={MERCHANT.mark} alt="" width={24} height={24} className="size-6 rounded-md ring-1 ring-white/10" /> CodeXa Agency
         </span>
         <span>Cart · 1</span>
       </div>
       <div className="mt-5 grid grid-cols-[38%_1fr] gap-5">
-        <div className="relative grid aspect-square place-items-center overflow-hidden rounded-2xl bg-gradient-to-br from-crimson-deep via-surface to-ink">
-          <span className="absolute top-[24%] left-[24%] size-[38%] rounded-full border-[5px] border-paper/90 bg-ink shadow-[0_0_30px_rgba(255,66,101,0.5)]" />
-          <span className="absolute right-[22%] bottom-[22%] size-[32%] rounded-full border-[5px] border-paper/70 bg-ink" />
+        <div className="relative aspect-square overflow-hidden rounded-2xl ring-1 ring-white/10">
+          <Image src={MERCHANT.product.image} alt="CodeXa Agency" fill sizes="(min-width: 1024px) 260px, 40vw" className="object-cover" />
+          <span className="absolute top-2 left-2 rounded-full bg-crimson px-2 py-0.5 font-mono text-[9px] tracking-widest text-white uppercase">Popular</span>
         </div>
         <div>
-          <div className="text-[11px] text-muted">Wireless earbuds</div>
-          <div className="font-display text-[15px] font-semibold uppercase sm:text-lg">Aurora Buds</div>
+          <div className="text-[11px] text-muted">{MERCHANT.product.category}</div>
+          <div className="font-display text-[15px] font-semibold uppercase sm:text-lg">{MERCHANT.product.title}</div>
+          <div className="mt-0.5 text-[11px] text-muted">{MERCHANT.product.subtitle}</div>
           <div className="mt-1 flex items-center gap-0.5 text-warn">
             {[0, 1, 2, 3, 4].map((i) => (
               <Star key={i} size={10} fill="currentColor" />
@@ -95,7 +98,7 @@ function CheckoutPanel({ stage }: { stage: number }) {
       className="absolute inset-x-[6%] top-[6%] bottom-[6%] rounded-2xl border border-white/10 bg-[#0c0b0f] p-5 shadow-[0_30px_100px_-20px_rgba(217,4,41,0.6)]"
     >
       <div className="flex items-center justify-between">
-        <span className="text-[13px] font-semibold">Aurora Store</span>
+        <span className="text-[13px] font-semibold">CodeXa Agency</span>
         <span className="font-mono text-[10px] text-dim">PXA-20481</span>
       </div>
       <div className="mt-1 font-display text-2xl font-semibold sm:text-3xl">₹499.00</div>
@@ -164,14 +167,14 @@ function CustomerPhone({ p, stage }: { p: number; stage: number }) {
               </div>
             </ScannerFrame>
             <div className={`mt-5 rounded-full px-3 py-1 text-[9px] font-semibold ${local(p, 2) > 0.8 ? "bg-ok text-ink" : "bg-white/10 text-white/80"}`}>
-              {local(p, 2) > 0.8 ? "QR detected · Aurora Store" : "Align QR inside the frame"}
+              {local(p, 2) > 0.8 ? "QR detected · CodeXa Agency" : "Align QR inside the frame"}
             </div>
           </div>
         ) : (
           <div className="flex h-[calc(100%-28px)] flex-col px-4 pt-4">
             <div className="text-[9px] font-semibold tracking-[0.18em] text-muted uppercase">Your UPI app</div>
             <div className="mt-4 text-[10px] text-muted">Paying</div>
-            <div className="text-[12px] font-semibold">Aurora Store</div>
+            <div className="text-[12px] font-semibold">CodeXa Agency</div>
             <div className="mt-2 font-display text-2xl font-semibold">₹499</div>
             {sent ? (
               <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mt-auto mb-10 flex flex-col items-center gap-2">
@@ -271,7 +274,7 @@ export default function CheckoutExperience() {
                   <span className="size-2.5 rounded-full bg-white/15" />
                   <span className="size-2.5 rounded-full bg-white/15" />
                   <span className="ml-3 flex-1 truncate rounded-md bg-white/[0.04] px-3 py-1 font-mono text-[10px] text-dim">
-                    https://aurora.store/{stage === 0 ? "cart" : "checkout"}
+                    https://codexa-agency.online/{stage === 0 ? "cart" : "checkout"}
                   </span>
                   <span className="hidden rounded-full border border-warn/30 px-2 py-0.5 font-mono text-[9px] text-warn sm:inline">TEST MODE</span>
                 </div>

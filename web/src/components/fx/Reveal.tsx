@@ -45,6 +45,7 @@ export function SplitReveal({
   accentWords = [],
   accentFrom,
   immediate = false,
+  hold = false,
 }: {
   text: string;
   className?: string;
@@ -56,6 +57,8 @@ export function SplitReveal({
   /** every word from this index on gets the red gradient */
   accentFrom?: number;
   immediate?: boolean;
+  /** keep words hidden until this turns false (e.g. while the intro plays) */
+  hold?: boolean;
 }) {
   const norm = (w: string) => w.toLowerCase().replace(/[^a-z0-9₹]/g, "");
   const accents = accentWords.map(norm);
@@ -64,7 +67,7 @@ export function SplitReveal({
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
   const reduce = useReducedMotion();
-  const show = immediate || inView;
+  const show = !hold && (immediate || inView);
   const lines = text.split("\n");
   let i = 0;
   return (

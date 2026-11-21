@@ -72,7 +72,7 @@ export function LiveFeed() {
 export function QuickActions() {
   const { openCheckout } = useCheckout();
   const items = [
-    { icon: Play, label: "Run test checkout", onClick: () => openCheckout({ merchant: "Aurora Store" }) },
+    { icon: Play, label: "Run test checkout", onClick: () => openCheckout({ merchant: "CodeXa Agency" }) },
     { icon: Link2, label: "New payment link", href: "/dashboard/links" },
     { icon: Smartphone, label: "Pair a device", href: "/dashboard/devices" },
     { icon: QrCode, label: "Download QR", href: "/dashboard/qr" },

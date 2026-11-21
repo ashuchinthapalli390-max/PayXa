@@ -3,7 +3,7 @@ export const site = {
   tagline: "Payments. Connected.",
   description:
     "UPI-first checkout with instant merchant alerts, live payment tracking, developer-friendly integrations and trusted verification. A CodeXa Agency ecosystem product.",
-  url: "https://payxa.example",
+  url: "https://payxa.in",
 };
 
 export type NavItem = { label: string; href: string; desc?: string };

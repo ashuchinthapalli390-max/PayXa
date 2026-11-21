@@ -82,8 +82,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       begin({
         id: `PXA-${seq}`,
         amount: o?.amount ?? 49900,
-        item: o?.item ?? "Aurora Buds · Wireless earbuds",
-        merchant: o?.merchant ?? "Aurora Store",
+        item: o?.item ?? "Website Strategy Call · 30 min",
+        merchant: o?.merchant ?? "CodeXa Agency",
       });
     },
     [begin],

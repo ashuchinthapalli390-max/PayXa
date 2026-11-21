@@ -10,10 +10,10 @@ export default function QrPage() {
     <div className="mx-auto max-w-[1200px]">
       <PageHeader title="QR Payments" subtitle="A counter QR for walk-in customers, plus per-order dynamic QR where supported." />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
-        <Panel title="Counter QR · Aurora Store">
+        <Panel title="Counter QR · CodeXa Agency">
           <div className="mx-auto max-w-[300px] rounded-3xl bg-gradient-to-b from-crimson to-crimson-deep p-6 text-center shadow-[0_30px_80px_-30px_rgba(217,4,41,0.8)]">
             <div className="font-display text-lg font-bold tracking-wide text-white uppercase">Scan & pay</div>
-            <div className="mb-4 text-[12px] text-white/75">Any UPI app · Aurora Store</div>
+            <div className="mb-4 text-[12px] text-white/75">Any UPI app · CodeXa Agency</div>
             <ScannerFrame>
               <RealQR />
             </ScannerFrame>

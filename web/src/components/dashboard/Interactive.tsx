@@ -254,7 +254,7 @@ export function WebhookTester({ initial }: { initial: Delivery[] }) {
   return (
     <div>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <code className="flex-1 truncate rounded-xl border border-white/[0.06] bg-ink/60 px-3.5 py-2.5 font-mono text-[12px] text-paper">https://aurora.store/webhooks/payxa</code>
+        <code className="flex-1 truncate rounded-xl border border-white/[0.06] bg-ink/60 px-3.5 py-2.5 font-mono text-[12px] text-paper">https://codexa-agency.online/webhooks/payxa</code>
         <select value={event} onChange={(e) => setEvent(e.target.value)} className="h-10 rounded-xl border border-white/[0.08] bg-[#0f0e12] px-3 font-mono text-[12px] text-paper" aria-label="Event to send">
           {["checkout.started", "payment.detected", "payment.verifying", "payment.verified", "payment.needs_review", "payment.late_detected", "device.offline"].map((e) => (
             <option key={e}>{e}</option>

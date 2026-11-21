@@ -55,6 +55,36 @@ export default function AboutPage() {
           </Reveal>
         </div>
       </section>
+      <section className="container-px pb-16">
+        <Reveal>
+          <a
+            href="https://codexa-agency.online"
+            target="_blank"
+            rel="noopener"
+            className="group grid items-center gap-8 overflow-hidden rounded-[28px] border border-white/[0.07] bg-[#0b0a0d] p-6 transition-colors hover:border-crimson/40 sm:grid-cols-[220px_1fr] sm:p-8"
+          >
+            <Image
+              src="/brand/codexa-logo.jpg"
+              alt="CodeXa Agency logo"
+              width={440}
+              height={440}
+              className="mx-auto w-[200px] rounded-2xl ring-1 ring-white/10 transition-transform duration-700 group-hover:scale-[1.03] sm:w-full"
+            />
+            <div>
+              <div className="eyebrow">Built by</div>
+              <div className="display mt-3 text-3xl sm:text-4xl">
+                Code<span className="text-gradient-red">Xa</span> Agency
+              </div>
+              <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
+                Building solutions, creating futures. CodeXa Agency designs and engineers websites, apps and platforms like PayXa.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.16em] text-neon uppercase">
+                Visit codexa-agency.online ↗
+              </span>
+            </div>
+          </a>
+        </Reveal>
+      </section>
       <section className="container-px pb-28" data-scene="cube" data-side="center">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {values.map(([t, d], i) => (

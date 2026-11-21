@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { sceneStore, type Shape, type Side } from "./sceneStore";
+import { introPlaying } from "@/components/fx/IntroLoader";
 
 const Universe = dynamic(() => import("./Universe"), { ssr: false });
 
@@ -55,6 +56,18 @@ export default function SceneLayer() {
   // Watch scene markers on each route
   useEffect(() => {
     let io: IntersectionObserver | null = null;
+    // During the cinematic intro the universe warps through a tunnel; the page's
+    // first scene (e.g. the hero QR) assembles right as the curtain opens.
+    const intro = introPlaying();
+    const onIntroDone = () => {
+      sceneStore.set({ lock: 0 });
+      const first = document.querySelector<HTMLElement>("[data-scene]");
+      if (first) sceneStore.set({ shape: (first.dataset.scene as Shape) || "rings", side: (first.dataset.side as Side) || "center" });
+    };
+    if (intro) {
+      sceneStore.set({ shape: "tunnel", side: "center", lock: Date.now() + 60_000 });
+      window.addEventListener("payxa:intro-done", onIntroDone, { once: true });
+    }
     const id = window.setTimeout(() => {
       const els = Array.from(document.querySelectorAll<HTMLElement>("[data-scene]"));
       const apply = (el: HTMLElement) =>
@@ -75,6 +88,7 @@ export default function SceneLayer() {
     return () => {
       window.clearTimeout(id);
       io?.disconnect();
+      window.removeEventListener("payxa:intro-done", onIntroDone);
     };
   }, [pathname]);
 

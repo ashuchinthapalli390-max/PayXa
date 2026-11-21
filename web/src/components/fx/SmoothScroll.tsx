@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { introPlaying } from "./IntroLoader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +32,18 @@ export default function SmoothScroll() {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
+    // Hold the page still while the cinematic intro plays.
+    const resume = () => {
+      lenis.start();
+      ScrollTrigger.refresh();
+    };
+    if (introPlaying()) {
+      lenis.stop();
+      window.addEventListener("payxa:intro-done", resume, { once: true });
+    }
+
     return () => {
+      window.removeEventListener("payxa:intro-done", resume);
       gsap.ticker.remove(tick);
       lenis.destroy();
       lenisInstance = null;

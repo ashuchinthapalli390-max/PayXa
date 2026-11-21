@@ -45,9 +45,9 @@ export default async function SettingsPage() {
           <Panel title={<span className="flex items-center gap-2"><Building2 size={15} className="text-dim" /> Business</span>}>
             <dl className="space-y-3 text-[13px]">
               {[
-                ["Display name", "Aurora Store"],
-                ["Category", "Electronics & accessories"],
-                ["Website", "aurora.store"],
+                ["Display name", "CodeXa Agency"],
+                ["Category", "Digital agency · Web & app development"],
+                ["Website", "codexa-agency.online"],
                 ["Merchant ID", "merch_test_01"],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-4">
@@ -60,7 +60,7 @@ export default async function SettingsPage() {
           <Panel title={<span className="flex items-center gap-2"><Landmark size={15} className="text-dim" /> Receiving UPI</span>}>
             <div className="flex items-center justify-between rounded-xl bg-white/[0.03] p-4">
               <div>
-                <div className="font-mono text-[13px]">aurorastore@payxatest</div>
+                <div className="font-mono text-[13px]">codexa@payxatest</div>
                 <div className="text-[12px] text-dim">Test receiving account</div>
               </div>
               <Pill tone="ok">

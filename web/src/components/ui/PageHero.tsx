@@ -4,6 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Reveal, SplitReveal } from "@/components/fx/Reveal";
 import type { Shape, Side } from "@/components/three/sceneStore";
+import { useIntroDone } from "@/components/fx/IntroLoader";
 
 export default function PageHero({
   eyebrow,
@@ -23,6 +24,7 @@ export default function PageHero({
   side?: Side;
 }) {
   const ref = useRef<HTMLElement>(null);
+  const ready = useIntroDone();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, -120]);
   const rotateX = useTransform(scrollYProgress, [0, 1], [0, 24]);
@@ -50,6 +52,7 @@ export default function PageHero({
         <SplitReveal
           as="h1"
           immediate
+          hold={!ready}
           delay={0.35}
           text={title}
           accentWords={accentWords}
