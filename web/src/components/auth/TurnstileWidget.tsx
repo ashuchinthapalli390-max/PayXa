@@ -37,7 +37,8 @@ function loadTurnstileScript() {
 interface TurnstileWidgetProps {
   siteKey: string;
   action?: string;
-  onSuccess: (token: string) => void;
+  /** Optional: server components can't pass functions to client components. */
+  onSuccess?: (token: string) => void;
   onError?: (err?: string) => void;
 }
 
@@ -72,9 +73,9 @@ export default function TurnstileWidget({
           size: "flexible",
           callback: (token: string) => {
             setError(null);
-            onSuccess(token);
+            onSuccess?.(token);
           },
-          "error-callback": (err: any) => {
+          "error-callback": () => {
             const msg = "Cloudflare security check failed. Please retry.";
             setError(msg);
             onError?.(msg);
@@ -90,7 +91,7 @@ export default function TurnstileWidget({
         });
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         if (cancelled) return;
         const msg = "Could not load Cloudflare Turnstile. Please check network/ad-blockers.";
         setError(msg);

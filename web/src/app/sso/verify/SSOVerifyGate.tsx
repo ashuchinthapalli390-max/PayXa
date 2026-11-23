@@ -37,8 +37,8 @@ export default function SSOVerifyGate({ siteKey, email, dest }: SSOVerifyGatePro
       window.setTimeout(() => {
         window.location.replace(data.redirect || `/api/sso/dash/authorize?dest=${encodeURIComponent(dest)}`);
       }, 500);
-    } catch (err: any) {
-      setError(err.message || "Failed to verify Turnstile challenge.");
+    } catch (err) {
+      setError((err instanceof Error && err.message) || "Failed to verify Turnstile challenge.");
       setSubmitting(false);
     }
   };

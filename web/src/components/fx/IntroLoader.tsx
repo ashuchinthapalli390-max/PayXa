@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 
 /**
  * Cinematic 5s intro, played on every full page load (refresh / first visit).
@@ -40,7 +41,9 @@ export const introPlaying = () => typeof document !== "undefined" && !!document.
 const statuses = ["Initialising network", "Securing channel", "Syncing UPI nodes", "Pairing alerts", "Ready"];
 
 export default function IntroLoader() {
-  const [visible, setVisible] = useState(() => !played);
+  const pathname = usePathname();
+  // The post-login role router is a hand-off screen, not a landing page: no intro there.
+  const [visible, setVisible] = useState(() => !played && !pathname.startsWith("/continue"));
   const [skipping, setSkipping] = useState(false);
   const counter = useRef<HTMLSpanElement>(null);
   const status = useRef<HTMLSpanElement>(null);

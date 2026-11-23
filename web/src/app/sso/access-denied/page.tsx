@@ -42,7 +42,7 @@ export default async function AccessDeniedPage({
 
         <div className="mt-6 space-y-2.5">
           <Link
-            href="/dashboard"
+            href="/continue"
             className="flex items-center justify-center gap-2 w-full rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-paper p-3 text-[13px] font-medium transition-colors"
           >
             <LayoutDashboard size={15} /> Open Merchant Dashboard

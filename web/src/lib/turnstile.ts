@@ -63,8 +63,8 @@ export async function verifyTurnstile(
     }
 
     data = (await res.json()) as SiteverifyResponse;
-  } catch (err: any) {
-    return { ok: false, reason: err.name === "TimeoutError" ? "TURNSTILE_TIMEOUT" : "CLOUDFLARE_UNREACHABLE" };
+  } catch (err) {
+    return { ok: false, reason: err instanceof Error && err.name === "TimeoutError" ? "TURNSTILE_TIMEOUT" : "CLOUDFLARE_UNREACHABLE" };
   }
 
   if (!data.success) {

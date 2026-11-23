@@ -1,27 +1,15 @@
 import { NextResponse, type NextMiddleware } from "next/server";
-import { auth, authConfigured } from "@/auth";
-import { DASHBOARD_URL } from "@/lib/dashboard-url";
-
-const protect = auth((req) => {
-  if (!req.auth?.user) {
-    const url = new URL("/login", req.nextUrl.origin);
-    url.searchParams.set("callbackUrl", req.nextUrl.pathname);
-    return NextResponse.redirect(url);
-  }
-}) as unknown as NextMiddleware;
 
 /**
- * /dashboard on this site:
- *  - If the dashboard subdomain is configured, permanently hand off to it (it does its own login + Cloudflare checks).
- *  - Otherwise guard the built-in dashboard. If auth isn't configured, show a friendly login notice.
+ * This site has no dashboard of its own any more. Old /dashboard links go through the
+ * role router (/continue), which checks the signed-in person's role and access and then
+ * sends them to the right place on dash.payxa.in (or the admin console).
  */
-export const middleware: NextMiddleware = (req, ev) => {
-  if (DASHBOARD_URL) {
-    const rest = req.nextUrl.pathname.slice("/dashboard".length) || "/";
-    return NextResponse.redirect(`${DASHBOARD_URL}${rest}${req.nextUrl.search}`, 308);
-  }
-  if (!authConfigured) return NextResponse.redirect(new URL("/login?error=Configuration", req.nextUrl.origin));
-  return protect(req, ev);
+export const middleware: NextMiddleware = (req) => {
+  const rest = req.nextUrl.pathname.slice("/dashboard".length);
+  const url = new URL("/continue", req.nextUrl.origin);
+  if (rest && rest !== "/") url.searchParams.set("next", rest + req.nextUrl.search);
+  return NextResponse.redirect(url, 307);
 };
 
 export const config = {

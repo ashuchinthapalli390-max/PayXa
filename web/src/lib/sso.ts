@@ -43,7 +43,8 @@ export async function issueSSOTicket(params: {
   state: string;
 }): Promise<string> {
   const { adminUserId, role, permissions, email, destination, state } = params;
-  const sharedSecret = process.env.DASH_SSO_SHARED_SECRET || "pxa_sso_shared_secret_489201948201948201948201948201";
+  const sharedSecret = process.env.DASH_SSO_SHARED_SECRET;
+  if (!sharedSecret) throw new Error("DASH_SSO_SHARED_SECRET is not configured");
 
   const ticketId = crypto.randomUUID();
   const now = Date.now();
@@ -99,7 +100,7 @@ export async function checkAdminAuthorization(email: string): Promise<{
       return { isAuthorized: false };
     }
 
-    const row = data[0] as any;
+    const row = data[0] as { admin_roles?: { user_id?: string; role?: string; permissions?: string[] } | null };
     const adminRole = row.admin_roles;
 
     if (!adminRole || !adminRole.user_id) {

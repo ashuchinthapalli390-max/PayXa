@@ -1,31 +1,31 @@
 /**
- * The merchant dashboard runs as its own app on a subdomain (e.g. https://dashboard.payxa.com).
- * When NEXT_PUBLIC_DASHBOARD_URL is unset, the built-in /dashboard is used instead.
+ * The merchant dashboard is its own app on a subdomain (PayXa DashBoard).
+ * Production: https://dash.payxa.in   Local: NEXT_PUBLIC_DASHBOARD_URL=http://localhost:3300
+ * This site no longer hosts a dashboard of its own.
  */
-export const DASHBOARD_URL = (process.env.NEXT_PUBLIC_DASHBOARD_URL || "").replace(/\/+$/, "");
-export const DASHBOARD_ORIGIN = DASHBOARD_URL ? new URL(DASHBOARD_URL).origin : null;
+export const DASHBOARD_URL = (process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://dash.payxa.in").replace(/\/+$/, "");
+export const DASHBOARD_ORIGIN = new URL(DASHBOARD_URL).origin;
 
-/** Where to land after login when no callback was given. */
-export const dashboardHome = DASHBOARD_URL ? `${DASHBOARD_URL}/` : "/dashboard";
+/** After login everyone goes through the role router, which picks the right destination. */
+export const CONTINUE_PATH = "/continue";
 
 /**
- * Post-login redirect allow-list: same-site relative paths, or absolute URLs on
- * the dashboard subdomain only. Anything else (open redirect attempts) → dashboard home.
+ * Post-login redirect allow-list: same-site relative paths, or absolute URLs on the
+ * dashboard subdomain only. Anything else (open-redirect attempts) → the role router.
  */
 export function resolveCallback(v: unknown): string {
   const s = typeof v === "string" ? v : "";
   if (s.startsWith("/") && !s.startsWith("//") && !s.startsWith("/\\")) {
-    // Old /dashboard links go to the subdomain when it's configured.
-    if (DASHBOARD_URL && (s === "/dashboard" || s.startsWith("/dashboard/"))) return `${DASHBOARD_URL}${s.slice("/dashboard".length) || "/"}`;
+    // Old /dashboard links: let the role router decide where this person belongs.
+    if (s === "/dashboard" || s.startsWith("/dashboard/")) return CONTINUE_PATH;
     return s;
   }
-  if (DASHBOARD_ORIGIN) {
-    try {
-      const u = new URL(s);
-      if (u.origin === DASHBOARD_ORIGIN) return u.toString();
-    } catch {
-      /* not a URL */
-    }
+  try {
+    const u = new URL(s);
+    // A dashboard deep link is honoured only after the role check (access-based).
+    if (u.origin === DASHBOARD_ORIGIN) return `${CONTINUE_PATH}?next=${encodeURIComponent(u.pathname + u.search)}`;
+  } catch {
+    /* not a URL */
   }
-  return dashboardHome;
+  return CONTINUE_PATH;
 }

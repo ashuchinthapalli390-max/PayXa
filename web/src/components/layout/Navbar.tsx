@@ -149,7 +149,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2">
             {user ? (
-              <Link href="/dashboard" className="hidden items-center gap-2.5 rounded-full border border-white/10 py-1 pr-4 pl-1 transition-colors hover:border-crimson/50 sm:flex">
+              <Link href="/continue" className="hidden items-center gap-2.5 rounded-full border border-white/10 py-1 pr-4 pl-1 transition-colors hover:border-crimson/50 sm:flex">
                 {user.image ? (
                   <Image src={user.image} alt="" width={28} height={28} className="size-7 rounded-full" />
                 ) : (
@@ -219,7 +219,7 @@ export default function Navbar() {
                 )}
               </ul>
               {user ? (
-                <Link href="/dashboard" className="btn btn-primary mt-auto">
+                <Link href="/continue" className="btn btn-primary mt-auto">
                   Open dashboard
                 </Link>
               ) : (

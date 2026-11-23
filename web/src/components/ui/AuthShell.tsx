@@ -69,7 +69,6 @@ export default function AuthShell({
                 <TurnstileWidget
                   siteKey={siteKey}
                   action={login ? "merchant-login" : "merchant-register"}
-                  onSuccess={() => {}}
                 />
               </div>
             )}

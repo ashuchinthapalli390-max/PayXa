@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
       destination: dest,
       state
     });
-  } catch (err: any) {
+  } catch (err) {
     console.error("SSO ticket issuance error:", err);
     return NextResponse.json({ error: "Failed to issue SSO ticket." }, { status: 500 });
   }
