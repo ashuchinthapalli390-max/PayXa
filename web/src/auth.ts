@@ -13,7 +13,13 @@ export const googleEnabled = authConfigured && Boolean(process.env.AUTH_GOOGLE_I
 export const testLoginEnabled = process.env.NODE_ENV !== "production" && process.env.AUTH_TEST_LOGIN === "true";
 
 const providers: Provider[] = [];
-if (googleEnabled) providers.push(Google);
+if (googleEnabled)
+  providers.push(
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    }),
+  );
 if (testLoginEnabled)
   providers.push(
     Credentials({
