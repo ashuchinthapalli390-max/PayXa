@@ -3,6 +3,7 @@ import { AlertTriangle, Info, Mail } from "lucide-react";
 import { Reveal } from "@/components/fx/Reveal";
 import AuthVisual from "@/components/auth/AuthVisual";
 import { GoogleSubmit, TestSubmit } from "@/components/auth/GoogleButton";
+import TurnstileWidget from "@/components/auth/TurnstileWidget";
 import { signInAsTestMerchant, signInWithGoogle } from "@/app/(auth)/actions";
 
 const errorText: Record<string, string> = {
@@ -19,12 +20,14 @@ export default function AuthShell({
   testLoginEnabled,
   callbackUrl,
   error,
+  siteKey,
 }: {
   mode: "login" | "register";
   googleEnabled: boolean;
   testLoginEnabled: boolean;
   callbackUrl: string;
   error?: string;
+  siteKey?: string;
 }) {
   const login = mode === "login";
   return (
@@ -58,6 +61,16 @@ export default function AuthShell({
               <div role="alert" className="mt-6 flex items-start gap-3 rounded-2xl border border-crimson/40 bg-crimson/10 p-4 text-[13px] text-paper">
                 <AlertTriangle size={16} className="mt-0.5 shrink-0 text-neon" />
                 {errorText[error] ?? "Sign-in failed. Please try again."}
+              </div>
+            )}
+
+            {siteKey && (
+              <div className="mt-6">
+                <TurnstileWidget
+                  siteKey={siteKey}
+                  action={login ? "merchant-login" : "merchant-register"}
+                  onSuccess={() => {}}
+                />
               </div>
             )}
 

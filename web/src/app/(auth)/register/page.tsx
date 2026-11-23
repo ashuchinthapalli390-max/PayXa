@@ -10,5 +10,6 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
   const { error } = await searchParams;
   const session = await getSession();
   if (session?.user) redirect(dashboardHome);
-  return <AuthShell mode="register" googleEnabled={googleEnabled} testLoginEnabled={testLoginEnabled} callbackUrl={dashboardHome} error={error} />;
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAGOZqQ1lav7mTcrR";
+  return <AuthShell mode="register" googleEnabled={googleEnabled} testLoginEnabled={testLoginEnabled} callbackUrl={dashboardHome} error={error} siteKey={siteKey} />;
 }

@@ -12,5 +12,6 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const cb = resolveCallback(callbackUrl);
   const session = await getSession();
   if (session?.user) redirect(cb);
-  return <AuthShell mode="login" googleEnabled={googleEnabled} testLoginEnabled={testLoginEnabled} callbackUrl={cb} error={error} />;
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAGOZqQ1lav7mTcrR";
+  return <AuthShell mode="login" googleEnabled={googleEnabled} testLoginEnabled={testLoginEnabled} callbackUrl={cb} error={error} siteKey={siteKey} />;
 }
