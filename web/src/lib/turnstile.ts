@@ -2,7 +2,7 @@ import "server-only";
 
 const isProd = process.env.NODE_ENV === "production";
 const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET || process.env.TURNSTILE_SECRET_KEY || "";
-const CONFIGURED_HOSTNAMES = (process.env.TURNSTILE_HOSTNAMES || "payxa.in,api.payxa.in,dashboard.payxa.in")
+const CONFIGURED_HOSTNAMES = (process.env.TURNSTILE_HOSTNAMES || "payxa.in,api.payxa.in,dash.payxa.in")
   .split(",")
   .map(h => h.trim().toLowerCase())
   .filter(Boolean);
@@ -77,10 +77,7 @@ export async function verifyTurnstile(
   }
 
   // Validate allowed hostnames
-  const allowed = new Set([
-    ...CONFIGURED_HOSTNAMES,
-    ...(!isProd ? ["localhost", "127.0.0.1"] : [])
-  ]);
+  const allowed = new Set(CONFIGURED_HOSTNAMES);
 
   if (data.hostname) {
     const host = data.hostname.toLowerCase().trim();

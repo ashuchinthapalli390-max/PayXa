@@ -1,6 +1,6 @@
 /**
  * The merchant dashboard is its own app on a subdomain (PayXa DashBoard).
- * Production: https://dash.payxa.in   Local: NEXT_PUBLIC_DASHBOARD_URL=http://localhost:3300
+ * Dashboard: https://dash.payxa.in (set NEXT_PUBLIC_DASHBOARD_URL to override)
  * This site no longer hosts a dashboard of its own.
  */
 export const DASHBOARD_URL = (process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://dash.payxa.in").replace(/\/+$/, "");
