@@ -92,7 +92,8 @@ export async function checkAdminAuthorization(email: string): Promise<{
     const { data, error } = await supabase
       .from("admin_sso_identities")
       .select("admin_id, is_active, admin_roles(user_id, role, permissions)")
-      .ilike("email", email.trim().toLowerCase())
+      // Case-insensitive exact match: escape LIKE wildcards so look-alike emails can't match an admin.
+      .ilike("email", email.trim().toLowerCase().replace(/[\\%_]/g, (c) => `\\${c}`))
       .eq("is_active", true)
       .limit(1);
 

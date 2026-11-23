@@ -45,7 +45,8 @@ export async function resolveAccess(email: string): Promise<Access> {
     supabase
       .from("merchant_members")
       .select("merchant_id, role, invitation_status, merchants!inner(business_name, status, deleted_at)")
-      .ilike("email", email.trim().toLowerCase()),
+      // Case-insensitive exact match: escape LIKE wildcards so "a_b@x.com" can't match "aXb@x.com".
+      .ilike("email", email.trim().toLowerCase().replace(/[\\%_]/g, (c) => `\\${c}`)),
   ]);
 
   if (members.error) {
