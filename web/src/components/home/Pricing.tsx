@@ -32,7 +32,7 @@ export default function Pricing({ index = "11" }: { index?: string }) {
               <div className="pointer-events-none absolute -top-10 -right-10 size-44 rounded-full border border-crimson/20" />
               <div className="flex items-center justify-between">
                 <span className="font-display text-sm font-semibold tracking-wide uppercase">Free Starter</span>
-                <span className="chip !border-crimson/50 !text-paper">Proposed V1</span>
+                <span className="chip !border-crimson/50 !text-paper">Default plan</span>
               </div>
               <div className="mt-8 flex items-end gap-3">
                 <span className="font-display text-[96px] leading-none font-bold tracking-tighter sm:text-[120px]">₹0</span>
@@ -59,13 +59,13 @@ export default function Pricing({ index = "11" }: { index?: string }) {
               <span className="font-display text-sm font-semibold tracking-wide text-muted uppercase">Business plans</span>
               <div className="mt-8 font-display text-4xl font-bold">Later</div>
               <p className="mt-4 text-[14px] leading-relaxed text-muted">
-                Optional plans for teams, advanced analytics and multiple verified UPI accounts may come after V1, once free-tier
-                costs are understood.
+                Optional plans for teams, advanced analytics and multiple verified UPI accounts are on the roadmap. Starter stays
+                free.
               </p>
               <div className="mt-auto rounded-2xl border border-white/[0.06] bg-ink/60 p-5 pt-5">
                 <div className="eyebrow !text-warn">Please note</div>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted">
-                  Bank or PSP charges, applicable taxes and provider fees are separate. ₹0 is proposed PayXa pricing, not a promise
+                  Bank or PSP charges, applicable taxes and provider fees are separate. ₹0 is the PayXa platform fee, not a promise
                   that every transaction is completely free. Merchant tax obligations still apply.
                 </p>
               </div>

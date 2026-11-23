@@ -26,13 +26,13 @@ export default function Integrations({ index = "10" }: { index?: string }) {
           eyebrow="Integration ecosystem"
           title={"Plug in. Today\nand tomorrow."}
           accentWords={["today"]}
-          description="What is planned for V1 and what is on the roadmap are kept clearly separate. We do not call anything ready before it is."
+          description="What ships in V1 and what is on the roadmap are kept clearly separate. We do not call anything ready before it is."
         />
         <div className="mt-14 grid grid-cols-1 [&>*]:min-w-0 gap-6 lg:grid-cols-[2fr_1fr]">
           <Reveal>
             <div className="card h-full p-6 sm:p-8">
               <div className="flex items-center justify-between">
-                <span className="eyebrow !text-paper">V1 · In development</span>
+                <span className="eyebrow !text-paper">V1 · Available</span>
                 <span className="chip !py-1 !text-[10px]">
                   <span className="size-1.5 rounded-full bg-ok" /> Core
                 </span>

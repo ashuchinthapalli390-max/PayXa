@@ -35,7 +35,7 @@ export const faqs: [string, string][] = [
   ],
   [
     "Does PayXa charge any fees?",
-    "The proposed V1 plan has a ₹0 PayXa platform fee. Bank or PSP charges, applicable taxes and provider fees may still apply and are separate.",
+    "The Free Starter plan has a ₹0 PayXa platform fee. Bank or PSP charges, applicable taxes and provider fees may still apply and are separate.",
   ],
   [
     "How are refunds handled?",

@@ -57,7 +57,7 @@ export default function DevelopersPage() {
 
       <section id="api" data-scene="cube" data-side="left" className="section-y scroll-mt-24 border-t border-white/[0.06]">
         <div className="container-px grid grid-cols-1 [&>*]:min-w-0 gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-          <SectionHeader eyebrow="API reference" title={"Twelve endpoints.\nNo surprises."} accentWords={["twelve"]} description="Proposed v1 surface. Base URL and SDK names are placeholders until launch." />
+          <SectionHeader eyebrow="API reference" title={"Twelve endpoints.\nNo surprises."} accentWords={["twelve"]} description="The v1 REST surface at api.payxa.in, authenticated with your secret API key." />
           <Reveal>
             <div className="card overflow-hidden">
               {endpoints.map(([m, p, d]) => (

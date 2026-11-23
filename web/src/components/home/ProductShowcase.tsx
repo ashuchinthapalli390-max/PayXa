@@ -134,7 +134,7 @@ function Visual({ id }: { id: string }) {
           <div className="mt-4 space-y-3">
             <div className="rounded-xl border border-white/10 px-4 py-3 text-[14px]">Workshop seat · ₹2,500</div>
             <div className="flex items-center gap-2 rounded-xl border border-crimson/40 bg-crimson/5 px-4 py-3 font-mono text-[12px] text-paper">
-              <Link2 size={14} className="text-neon" /> pay.payxa.example/l/ws-2500
+              <Link2 size={14} className="text-neon" /> pay.payxa.in/l/ws-2500
             </div>
             <div className="grid grid-cols-3 gap-2 text-center font-mono text-[10px] text-muted">
               <span className="rounded-lg bg-white/[0.03] py-2">Views 18</span>

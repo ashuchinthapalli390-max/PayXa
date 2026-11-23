@@ -1,8 +1,14 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { Info } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Loader2, Send } from "lucide-react";
+import TurnstileWidget from "@/components/auth/TurnstileWidget";
+import { sendContact, type ContactState } from "@/app/(site)/contact/actions";
+
+const inputCls =
+  "mt-2 w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-[15px] text-paper placeholder:text-dim outline-none transition-[border-color,box-shadow] focus:border-neon focus:shadow-[0_0_0_3px_rgba(255,66,101,0.09)]";
 
 export function Field({
   label,
@@ -12,6 +18,7 @@ export function Field({
   textarea,
   autoComplete,
   required,
+  maxLength,
 }: {
   label: string;
   name: string;
@@ -20,54 +27,79 @@ export function Field({
   textarea?: boolean;
   autoComplete?: string;
   required?: boolean;
+  maxLength?: number;
 }) {
-  const cls =
-    "mt-2 w-full rounded-xl border border-white/10 bg-ink px-4 py-3 text-[15px] text-paper placeholder:text-dim outline-none transition-[border-color,box-shadow] focus:border-neon focus:shadow-[0_0_0_3px_rgba(255,66,101,0.09)]";
   return (
     <label className="block">
       <span className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase">{label}</span>
       {textarea ? (
-        <textarea name={name} placeholder={placeholder} rows={5} required={required} className={`${cls} resize-none`} />
+        <textarea name={name} placeholder={placeholder} rows={5} required={required} maxLength={maxLength} className={`${inputCls} resize-none`} />
       ) : (
-        <input name={name} type={type} placeholder={placeholder} autoComplete={autoComplete} required={required} className={cls} />
+        <input name={name} type={type} placeholder={placeholder} autoComplete={autoComplete} required={required} maxLength={maxLength} className={inputCls} />
       )}
     </label>
   );
 }
 
-/** Pre-launch form: validates locally, sends nothing, and says so. */
-export function PreviewForm({
-  children,
-  submitLabel,
-  notice,
-  className = "",
-}: {
-  children: ReactNode;
-  submitLabel: string;
-  notice: string;
-  className?: string;
-}) {
-  const [sent, setSent] = useState(false);
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSent(true);
-  };
+function SendButton() {
+  const { pending } = useFormStatus();
   return (
-    <form onSubmit={onSubmit} className={`space-y-5 ${className}`} noValidate={false}>
-      {children}
-      <button type="submit" className="btn btn-primary w-full">
-        {submitLabel}
-      </button>
+    <button type="submit" disabled={pending} className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60">
+      {pending ? <Loader2 size={16} className="animate-spin" /> : <Send size={15} />}
+      {pending ? "Sending…" : "Send message"}
+    </button>
+  );
+}
+
+/** Contact form: delivered to the PayXa inbox by email (Resend), with a copy receipt to the sender. */
+export function ContactForm({ siteKey }: { siteKey?: string }) {
+  const [state, action] = useActionState<ContactState, FormData>(sendContact, { status: "idle" });
+
+  if (state.status === "sent")
+    return (
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center py-10 text-center" role="status">
+        <span className="grid size-14 place-items-center rounded-full bg-ok/10 text-ok">
+          <CheckCircle2 size={26} />
+        </span>
+        <h3 className="mt-5 font-display text-xl font-semibold">Message sent</h3>
+        <p className="mt-2 max-w-sm text-[14px] text-muted">Thanks for reaching out. We&apos;ve emailed you a confirmation and the right person will reply, usually within one business day.</p>
+      </motion.div>
+    );
+
+  return (
+    <form action={action} className="space-y-5">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field label="Name" name="name" autoComplete="name" required maxLength={80} />
+        <Field label="Work email" name="email" type="email" autoComplete="email" required />
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field label="Company / website" name="company" maxLength={120} />
+        <label className="block">
+          <span className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase">Topic</span>
+          <select name="topic" defaultValue="Sales & partnerships" className={inputCls}>
+            <option>Sales &amp; partnerships</option>
+            <option>Support</option>
+            <option>Security</option>
+            <option>Other</option>
+          </select>
+        </label>
+      </div>
+      <Field label="How can we help?" name="message" textarea required maxLength={5000} />
+      {/* honeypot */}
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
+      {siteKey && <TurnstileWidget key={state.captcha ?? 0} siteKey={siteKey} action="contact" />}
+      <SendButton />
       <AnimatePresence>
-        {sent && (
+        {state.status === "error" && state.message && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-start gap-3 rounded-xl border border-warn/30 bg-warn/[0.07] p-4 text-[13px] text-muted"
-            role="status"
+            exit={{ opacity: 0 }}
+            role="alert"
+            className="flex items-start gap-3 rounded-xl border border-crimson/40 bg-crimson/10 p-4 text-[13px] text-paper"
           >
-            <Info size={16} className="mt-0.5 shrink-0 text-warn" />
-            {notice}
+            <AlertTriangle size={16} className="mt-0.5 shrink-0 text-neon" />
+            {state.message}
           </motion.div>
         )}
       </AnimatePresence>

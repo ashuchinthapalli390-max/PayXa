@@ -60,7 +60,7 @@ export default function FinalCTA() {
             </h2>
             <motion.div style={reduce ? undefined : { opacity: rest, y: restY }}>
               <p className="mx-auto mt-6 max-w-xl text-[16px] text-white/85">
-                Join the sandbox today. Build your integration while we complete partner and compliance reviews for live payments.
+                Create your free account in a minute with just your email. Build in Test mode, then go live once your business is verified.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-3">
                 <Magnetic>

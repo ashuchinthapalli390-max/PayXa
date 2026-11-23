@@ -124,7 +124,7 @@ export default function Developers() {
               ))}
             </ul>
             <p className="mt-3 font-mono text-[10px] tracking-[0.12em] text-dim uppercase">
-              Proposed v1 API · .example hosts are placeholders
+              REST API v1 · api.payxa.in
             </p>
           </Reveal>
         </div>

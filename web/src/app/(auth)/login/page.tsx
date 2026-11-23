@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import AuthShell from "@/components/ui/AuthShell";
-import { getSession, googleEnabled, testLoginEnabled } from "@/auth";
+import { getSession, googleEnabled } from "@/auth";
 import { resolveCallback } from "@/lib/dashboard-url";
 
 export const metadata: Metadata = { title: "Log in" };
@@ -12,6 +12,6 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const cb = resolveCallback(callbackUrl);
   const session = await getSession();
   if (session?.user) redirect(cb);
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAGOZqQ1lav7mTcrR";
-  return <AuthShell mode="login" googleEnabled={googleEnabled} testLoginEnabled={testLoginEnabled} callbackUrl={cb} error={error} siteKey={siteKey} />;
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || undefined;
+  return <AuthShell mode="login" googleEnabled={googleEnabled} callbackUrl={cb} error={error} siteKey={siteKey} />;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Briefcase, LifeBuoy, ShieldAlert } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
-import { Field, PreviewForm } from "@/components/ui/Forms";
+import { ContactForm } from "@/components/ui/Forms";
 import { Reveal } from "@/components/fx/Reveal";
 
 export const metadata: Metadata = { title: "Contact" };
@@ -38,17 +38,7 @@ export default function ContactPage() {
           </div>
           <Reveal delay={0.1}>
             <div className="card p-6 sm:p-8">
-              <PreviewForm
-                submitLabel="Send message"
-                notice="Thanks for reaching out. Our inbox opens at launch, so this message has not been sent yet. Please check back soon."
-              >
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Name" name="name" autoComplete="name" required />
-                  <Field label="Work email" name="email" type="email" autoComplete="email" required />
-                </div>
-                <Field label="Company / website" name="company" />
-                <Field label="How can we help?" name="message" textarea required />
-              </PreviewForm>
+              <ContactForm siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || undefined} />
             </div>
           </Reveal>
         </div>

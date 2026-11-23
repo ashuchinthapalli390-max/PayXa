@@ -9,7 +9,7 @@ import { Reveal } from "@/components/fx/Reveal";
 export const metadata: Metadata = { title: "Pricing" };
 
 const rows: [string, string, string][] = [
-  ["PayXa platform fee", "₹0", "Proposed V1 Free Starter"],
+  ["PayXa platform fee", "₹0", "Free Starter plan"],
   ["Bank / PSP charges", "As charged", "Set by your bank or payment partner"],
   ["Applicable taxes", "As applicable", "Including GST where it applies"],
   ["Third-party provider fees", "As charged", "If you use a provider that charges"],

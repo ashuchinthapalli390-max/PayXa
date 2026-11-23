@@ -48,8 +48,8 @@ export default function AboutPage() {
               </p>
               <h2>Where we are</h2>
               <p>
-                PayXa is pre-launch. The sandbox and developer platform come first; live payments follow partner, legal and security
-                reviews.
+                PayXa is open for merchant sign-up. Merchants create an account, verify their business and integrate through the
+                dashboard and API. Each merchant goes live after its verification and review are complete.
               </p>
             </Prose>
           </Reveal>

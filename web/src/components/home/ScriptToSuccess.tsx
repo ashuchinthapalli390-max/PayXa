@@ -12,7 +12,7 @@ import { useCheckout } from "@/components/checkout/CheckoutProvider";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const code = `<!-- 1. Add the PayXa script -->
-<script src="https://cdn.payxa.example/v1/checkout.js"></script>
+<script src="https://cdn.payxa.in/v1/checkout.js"></script>
 <button id="pay">Pay with PayXa</button>
 
 <script>

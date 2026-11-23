@@ -29,17 +29,3 @@ export function GoogleSubmit({ label, disabled = false }: { label: string; disab
     </button>
   );
 }
-
-export function TestSubmit() {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-warn/40 bg-warn/[0.05] font-mono text-[11px] font-semibold tracking-[0.16em] text-warn uppercase transition-colors hover:bg-warn/10 disabled:opacity-60"
-    >
-      {pending && <Loader2 size={14} className="animate-spin" />}
-      Continue as test merchant
-    </button>
-  );
-}

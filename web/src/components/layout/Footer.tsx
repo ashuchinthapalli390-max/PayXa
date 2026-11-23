@@ -23,7 +23,7 @@ export default function Footer() {
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <span className="chip">
-                <span className="pulse-dot" /> Launching soon
+                <span className="pulse-dot" /> Accepting merchants
               </span>
               <span className="chip">A CodeXa Agency product</span>
             </div>
@@ -67,8 +67,8 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col gap-4 border-t border-white/[0.06] pt-6 text-[12px] text-dim md:flex-row md:items-center md:justify-between">
           <p>
-            © {new Date().getFullYear()} PayXa · Powered by CodeXa Agency. PayXa is a payment technology platform in development; it
-            does not hold or settle customer funds.
+            © {new Date().getFullYear()} PayXa · Powered by CodeXa Agency. PayXa is a payment technology platform; it does not hold
+            or settle customer funds.
           </p>
           <p className="font-mono tracking-[0.14em] uppercase">Payments. Connected.</p>
         </div>

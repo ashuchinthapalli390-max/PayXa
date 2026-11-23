@@ -29,7 +29,7 @@ export const snippets: { id: string; label: string; file: string; code: string }
     id: "js",
     label: "JavaScript",
     file: "checkout.html",
-    code: `<script src="https://cdn.payxa.example/v1/checkout.js"></script>
+    code: `<script src="https://cdn.payxa.in/v1/checkout.js"></script>
 <button id="pay-button">Pay with PayXa</button>
 
 <script>
@@ -57,7 +57,7 @@ export const snippets: { id: string; label: string; file: string; code: string }
 const app = express();
 
 app.post("/api/create-checkout", async (req, res) => {
-  const order = await fetch("https://api.payxa.example/v1/orders", {
+  const order = await fetch("https://api.payxa.in/v1/orders", {
     method: "POST",
     headers: {
       Authorization: \`Bearer \${process.env.PAYXA_SECRET_KEY}\`,
@@ -102,7 +102,7 @@ export function PayButton({ orderId }: { orderId: string }) {
     label: "PHP",
     file: "create-order.php",
     code: `<?php
-$ch = curl_init("https://api.payxa.example/v1/orders");
+$ch = curl_init("https://api.payxa.in/v1/orders");
 curl_setopt_array($ch, [
   CURLOPT_POST => true,
   CURLOPT_RETURNTRANSFER => true,

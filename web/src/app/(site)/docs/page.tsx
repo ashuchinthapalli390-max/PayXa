@@ -16,7 +16,7 @@ const nav = [
   { id: "testing", label: "Testing", icon: Wrench },
 ];
 
-const createOrder = `curl https://api.payxa.example/v1/orders \\
+const createOrder = `curl https://api.payxa.in/v1/orders \\
   -H "Authorization: Bearer pxa_test_..." \\
   -H "Idempotency-Key: 7f9c..." \\
   -H "Content-Type: application/json" \\
@@ -41,7 +41,7 @@ export default function DocsPage() {
     <div className="container-px pt-[calc(var(--nav-h)+48px)] pb-28" data-scene="helix" data-side="right">
       <div className="grid grid-cols-1 [&>*]:min-w-0 gap-12 lg:grid-cols-[240px_1fr]">
         <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="eyebrow">Documentation · Draft v1</div>
+          <div className="eyebrow">Documentation · API v1</div>
           <nav className="mt-6 flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-1 lg:pb-0" data-lenis-prevent>
             {nav.map((n) => (
               <a
@@ -61,8 +61,8 @@ export default function DocsPage() {
               PayXa <span className="text-gradient-red">Docs</span>
             </h1>
             <p className="mt-4 max-w-2xl text-[17px] text-muted">
-              Draft documentation for the proposed v1 API. Hosts ending in <code className="text-paper">.example</code> are
-              placeholders until launch.
+              Reference for the PayXa v1 REST API at <code className="text-paper">api.payxa.in</code>. Build in Test mode with{" "}
+              <code className="text-paper">pxa_test_</code> keys, then switch to live keys.
             </p>
 
             <div className="mt-14 space-y-20">

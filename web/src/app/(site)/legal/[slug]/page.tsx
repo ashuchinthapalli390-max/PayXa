@@ -24,7 +24,7 @@ const docs: Record<string, { title: string; body: { h: string; p: string }[] }> 
   disclosures: {
     title: "Fee disclosures",
     body: [
-      { h: "PayXa platform fee", p: "The proposed V1 Free Starter plan has a ₹0 PayXa platform fee." },
+      { h: "PayXa platform fee", p: "The Free Starter plan has a ₹0 PayXa platform fee." },
       { h: "Other charges", p: "Bank or PSP charges, applicable taxes and third-party provider fees are separate and are not set by PayXa." },
       { h: "Changes", p: "Any future paid plans will be announced in advance and will be optional." },
     ],
