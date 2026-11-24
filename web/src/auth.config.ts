@@ -43,6 +43,11 @@ export const authConfig = {
     },
   },
   callbacks: {
+    /** Remember how the person signed in (shown in the dashboard's settings). */
+    jwt({ token, account }) {
+      if (account?.provider) token.provider = account.provider;
+      return token;
+    },
     /** Allow redirects back to the dashboard subdomain after login; everything else stays on this site. */
     redirect({ url, baseUrl }) {
       if (url.startsWith("/")) return `${baseUrl}${url}`;
