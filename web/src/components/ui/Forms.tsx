@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, CheckCircle2, Loader2, Send } from "lucide-react";
 import TurnstileWidget from "@/components/auth/TurnstileWidget";
+import Select from "@/components/ui/Select";
 import { sendContact, type ContactState } from "@/app/(site)/contact/actions";
 
 const inputCls =
@@ -74,15 +75,21 @@ export function ContactForm({ siteKey }: { siteKey?: string }) {
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Company / website" name="company" maxLength={120} />
-        <label className="block">
-          <span className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase">Topic</span>
-          <select name="topic" defaultValue="Sales & partnerships" className={inputCls}>
-            <option>Sales &amp; partnerships</option>
-            <option>Support</option>
-            <option>Security</option>
-            <option>Other</option>
-          </select>
-        </label>
+        <div>
+          <span className="block font-mono text-[11px] tracking-[0.14em] text-muted uppercase">Topic</span>
+          <Select
+            name="topic"
+            defaultValue="Sales & partnerships"
+            aria-label="Topic"
+            className="mt-2 !h-[50px] !px-4 !text-[15px]"
+            options={[
+              { value: "Sales & partnerships", label: "Sales & partnerships", hint: "Merchants, banks and PSPs" },
+              { value: "Support", label: "Support", hint: "Account and integration help" },
+              { value: "Security", label: "Security", hint: "Responsible disclosure" },
+              { value: "Other", label: "Other" },
+            ]}
+          />
+        </div>
       </div>
       <Field label="How can we help?" name="message" textarea required maxLength={5000} />
       {/* honeypot */}
