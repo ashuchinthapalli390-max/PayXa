@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { contactEmail, contactReceipt, mailConfigured, sendEmail } from "@/lib/mailer";
+import { SUPPORT_INBOX, contactEmail, contactReceipt, mailConfigured, sendEmail } from "@/lib/mailer";
 import { isValidEmail, normalizeEmail } from "@/lib/otp";
 
 export type ContactState = { status: "idle" | "sent" | "error"; message?: string; captcha?: number };
@@ -34,7 +34,7 @@ export async function sendContact(prev: ContactState, fd: FormData): Promise<Con
     if (!check.ok) return { status: "error", message: "Security check didn't pass. Please complete it and try again.", captcha: bump };
   }
 
-  const inbox = process.env.CONTACT_INBOX || "hello@payxa.in";
+  const inbox = process.env.CONTACT_INBOX || SUPPORT_INBOX;
   const mail = contactEmail({ name, email, company, topic, message });
   const sent = await sendEmail({ to: inbox, subject: mail.subject, html: mail.html, text: mail.text, replyTo: email, tags: [{ name: "type", value: "contact" }] });
 

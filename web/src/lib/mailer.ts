@@ -5,11 +5,14 @@ import "server-only";
  *
  * RESEND_API_KEY   re_...            (required in production)
  * EMAIL_FROM       "PayXa <no-reply@payxa.in>"  (domain must be verified in Resend)
- * EMAIL_REPLY_TO   support@payxa.in  (optional)
+ * EMAIL_REPLY_TO   where replies to PayXa emails go (default getpayxa@gmail.com)
  * CONTACT_INBOX    where contact-form messages are delivered
  */
 
-const SITE = (process.env.NEXT_PUBLIC_SITE_URL || "https://payxa.in").replace(/\/+$/, "");
+/** Team inbox: receives replies to every PayXa email and contact-form messages (unless overridden). */
+export const SUPPORT_INBOX = "getpayxa@gmail.com";
+
+const SITE =(process.env.NEXT_PUBLIC_SITE_URL || "https://payxa.in").replace(/\/+$/, "");
 const FROM = process.env.EMAIL_FROM || "PayXa <no-reply@payxa.in>";
 
 export const mailConfigured = () => Boolean(process.env.RESEND_API_KEY);
@@ -29,7 +32,7 @@ export async function sendEmail(msg: { to: string | string[]; subject: string; h
         subject: msg.subject,
         html: msg.html,
         text: msg.text,
-        reply_to: msg.replyTo ?? process.env.EMAIL_REPLY_TO ?? undefined,
+        reply_to: msg.replyTo ?? (process.env.EMAIL_REPLY_TO || SUPPORT_INBOX),
         tags: msg.tags,
       }),
       cache: "no-store",
