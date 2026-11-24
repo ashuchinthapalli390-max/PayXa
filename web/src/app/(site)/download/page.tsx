@@ -6,6 +6,8 @@ import FinalCTA from "@/components/home/FinalCTA";
 import AppPreview from "@/components/home/AppPreview";
 import { Reveal } from "@/components/fx/Reveal";
 import { SectionHeader } from "@/components/ui/Section";
+import CopyValue from "@/components/download/CopyValue";
+import { merchantApp, merchantAppSizeMb } from "@/lib/merchant-app";
 
 export const metadata: Metadata = { title: "Download PayXa Merchant" };
 
@@ -31,19 +33,21 @@ export default function DownloadPage() {
         description="The official PayXa Merchant app pairs with your dashboard, alerts you when checkout starts and, with your permission, detects supported incoming credit alerts."
       >
         <div className="mt-10 flex flex-wrap items-center gap-4">
-          <button type="button" disabled className="btn btn-primary cursor-not-allowed opacity-60" aria-disabled>
-            <Download size={16} /> APK available at beta
-          </button>
-          <span className="font-mono text-[11px] tracking-[0.14em] text-dim uppercase">Android 8.0+ · Signed release only</span>
+          <a href="/download/android" download={merchantApp.fileName} className="btn btn-primary">
+            <Download size={16} /> Download APK · v{merchantApp.version}
+          </a>
+          <span className="font-mono text-[11px] tracking-[0.14em] text-dim uppercase">
+            {merchantApp.minAndroid}+ · {merchantAppSizeMb} MB · Signed release
+          </span>
         </div>
       </PageHero>
 
       <section className="container-px pb-24" data-scene="phone" data-side="right">
         <div className="grid gap-4 md:grid-cols-3">
           {[
-            { k: "Version", v: "Pre-release", d: "First signed beta will be published here." },
-            { k: "Integrity", v: "SHA-256 published", d: "Every release lists its checksum and signing certificate fingerprint." },
-            { k: "Updates", v: "In-app + website", d: "Only official signed updates. Never install a PayXa APK from anywhere else." },
+            { k: "Version", v: `${merchantApp.version} (build ${merchantApp.build})`, d: `Released ${new Date(merchantApp.releasedOn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}. Requires ${merchantApp.minAndroid} or newer.` },
+            { k: "Integrity", v: "SHA-256 published", d: "The checksum and signing certificate fingerprint are listed below." },
+            { k: "Updates", v: "From this page", d: "Only official signed updates. Never install a PayXa APK from anywhere else." },
           ].map((x, i) => (
             <Reveal key={x.k} delay={i * 0.06}>
               <div className="card h-full p-7">
@@ -54,6 +58,17 @@ export default function DownloadPage() {
             </Reveal>
           ))}
         </div>
+        <Reveal>
+          <div className="card mt-4 grid gap-6 p-7 md:grid-cols-2">
+            <CopyValue label="File SHA-256" value={merchantApp.sha256} />
+            <CopyValue label="Signing certificate SHA-256" value={merchantApp.signingCertSha256} />
+            <p className="text-[13px] text-muted md:col-span-2">
+              Installing for the first time: allow your browser to install apps when Android asks, then open PayXa and pair it from
+              dash.payxa.in → Devices. If an older test build of PayXa is on the phone, uninstall it first.{" "}
+              <a href={merchantApp.releaseNotesUrl} className="text-neon hover:underline" rel="noopener">Release notes</a>
+            </p>
+          </div>
+        </Reveal>
       </section>
 
       <Scene shape="phone" side="center"><AppPreview /></Scene>
@@ -88,7 +103,7 @@ export default function DownloadPage() {
             {[
               { icon: ShieldCheck, t: "Verify the checksum", d: "Compare the SHA-256 of your download with the value on this page before installing." },
               { icon: Fingerprint, t: "Check the signature", d: "Android will refuse updates signed with a different key. That is a feature." },
-              { icon: RefreshCw, t: "Update safely", d: "Use the in-app updater or this page. Ignore APKs shared on chats or other sites." },
+              { icon: RefreshCw, t: "Update safely", d: "Download updates only from this page. Ignore APKs shared on chats or other sites." },
             ].map((s) => (
               <div key={s.t}>
                 <s.icon size={20} className="text-neon" />
