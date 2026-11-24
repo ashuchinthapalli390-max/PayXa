@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowUpRight, Building2, Lock, PauseCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { getSession } from "@/auth";
-import { ADMIN_ENTRY, dashboardUrl, isBlocked, merchantLanding, resolveAccess } from "@/lib/access";
+import { adminEntry, dashboardUrl, isBlocked, merchantLanding, resolveAccess } from "@/lib/access";
 import { signOutAction } from "@/app/(auth)/actions";
 
 export const metadata: Metadata = { title: "Continue", robots: { index: false } };
@@ -16,6 +16,8 @@ const roleLabel: Record<string, string> = {
   FINANCE: "Finance",
   VIEWER: "Viewer",
   SUPER_ADMIN: "Super admin",
+  OWNER_ADMIN: "Owner",
+  PLATFORM_ADMIN: "Platform admin",
   ADMIN: "Admin",
   AUDITOR: "Auditor",
   SUPPORT: "Support",
@@ -51,7 +53,7 @@ export default async function ContinuePage({ searchParams }: { searchParams: Pro
 
   // Exactly one place to go → go there.
   if (primary && !access.admin) redirect(dashboardUrl(merchantLanding(primary)));
-  if (access.admin && !primary) redirect(ADMIN_ENTRY);
+  if (access.admin && !primary) redirect(adminEntry(access.admin));
   if (!access.admin && !primary && !blocked.length) redirect(dashboardUrl("/no-workspace"));
 
   const firstName = session?.user?.name?.split(" ")[0] ?? "there";
@@ -83,7 +85,7 @@ export default async function ContinuePage({ searchParams }: { searchParams: Pro
           <div className="mt-10 space-y-3">
             {access.admin && (
               <Link
-                href={ADMIN_ENTRY}
+                href={adminEntry(access.admin)}
                 prefetch={false}
                 className="group flex items-center gap-5 rounded-2xl border border-white/[0.08] bg-[#0f0e12] p-5 transition-colors hover:border-crimson/40"
               >
@@ -93,7 +95,7 @@ export default async function ContinuePage({ searchParams }: { searchParams: Pro
                 <span className="flex-1">
                   <span className="block text-[15px] font-semibold">PayXa Admin Console</span>
                   <span className="block text-[13px] text-muted">
-                    {roleLabel[access.admin.role] ?? access.admin.role} · security check, then a one-time sign-in ticket
+                    {roleLabel[access.admin.role] ?? access.admin.role} · security check, one-time ticket, then your authenticator code
                   </span>
                 </span>
                 <ArrowUpRight size={18} className="text-dim transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

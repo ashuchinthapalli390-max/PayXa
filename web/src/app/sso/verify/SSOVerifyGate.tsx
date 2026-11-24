@@ -9,9 +9,11 @@ interface SSOVerifyGateProps {
   siteKey: string;
   email: string;
   dest: string;
+  /** Set when the sign-in started on admin.payxa.in. */
+  adminState?: string;
 }
 
-export default function SSOVerifyGate({ siteKey, email, dest }: SSOVerifyGateProps) {
+export default function SSOVerifyGate({ siteKey, email, dest, adminState }: SSOVerifyGateProps) {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +26,7 @@ export default function SSOVerifyGate({ siteKey, email, dest }: SSOVerifyGatePro
       const res = await fetch("/api/sso/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, dest })
+        body: JSON.stringify(adminState ? { token, dest, target: "admin", state: adminState } : { token, dest })
       });
 
       const data = await res.json().catch(() => ({}));
@@ -35,7 +37,9 @@ export default function SSOVerifyGate({ siteKey, email, dest }: SSOVerifyGatePro
 
       setSuccess(true);
       window.setTimeout(() => {
-        window.location.replace(data.redirect || `/api/sso/dash/authorize?dest=${encodeURIComponent(dest)}`);
+        window.location.replace(
+          data.redirect || (adminState ? `/api/sso/admin/authorize?state=${adminState}` : `/api/sso/dash/authorize?dest=${encodeURIComponent(dest)}`)
+        );
       }, 500);
     } catch (err) {
       setError((err instanceof Error && err.message) || "Failed to verify Turnstile challenge.");

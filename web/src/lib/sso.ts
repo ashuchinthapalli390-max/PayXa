@@ -74,8 +74,40 @@ export async function issueSSOTicket(params: {
   return ticketString;
 }
 
+/** admin.payxa.in — the restricted platform admin console. */
+export const ADMIN_CONSOLE_URL = (process.env.ADMIN_CONSOLE_URL || "https://admin.payxa.in").replace(/\/+$/, "");
+
+/**
+ * admin.payxa.in identity check: an ACTIVE row in platform_admins whose email equals the verified
+ * login email. This only decides whether to issue a ticket; the API re-checks the row, the
+ * server allowlist and MFA before any admin data is served.
+ */
+export async function checkPlatformAdmin(email: string): Promise<{ userId: string; role: "owner" | "platform_admin" } | null> {
+  const normalized = email?.trim().toLowerCase();
+  if (!normalized) return null;
+  try {
+    const { data, error } = await getSupabaseAdmin()
+      .from("platform_admins")
+      .select("user_id, role, status")
+      .eq("email", normalized)
+      .eq("status", "active")
+      .maybeSingle();
+    if (error || !data) return null;
+    return { userId: data.user_id as string, role: data.role as "owner" | "platform_admin" };
+  } catch (err) {
+    console.error("checkPlatformAdmin error:", err);
+    return null;
+  }
+}
+
+/** State minted by admin.payxa.in/auth/start: base64url, 32–128 chars. */
+export function isValidAdminState(state: string | null | undefined): state is string {
+  return typeof state === "string" && /^[A-Za-z0-9_-]{32,128}$/.test(state);
+}
+
 /**
  * Checks whether an authenticated email is mapped to an active platform administrator.
+ * (Legacy api.payxa.in/dash diagnostics console.)
  */
 export async function checkAdminAuthorization(email: string): Promise<{
   isAuthorized: boolean;

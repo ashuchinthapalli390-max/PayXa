@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSession } from "@/auth";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { isValidAdminState } from "@/lib/sso";
 
 export const runtime = "nodejs";
 
@@ -30,10 +31,15 @@ export async function POST(req: NextRequest) {
     }, { status: 403 });
   }
 
+  // admin.payxa.in sign-ins continue to the admin-console authorize step with their state.
+  const adminState = body.target === "admin" && isValidAdminState(body.state) ? body.state : null;
+
   // Verification passed! Set short-lived SSO verification gate cookie
   const res = NextResponse.json({
     ok: true,
-    redirect: `/api/sso/dash/authorize?dest=${encodeURIComponent(dest)}`
+    redirect: adminState
+      ? `/api/sso/admin/authorize?state=${adminState}`
+      : `/api/sso/dash/authorize?dest=${encodeURIComponent(dest)}`
   });
 
   const isHttps = req.nextUrl.protocol === "https:";

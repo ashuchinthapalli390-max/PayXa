@@ -1,6 +1,6 @@
 import "server-only";
 import { getSupabaseAdmin } from "./supabase";
-import { checkAdminAuthorization } from "./sso";
+import { ADMIN_CONSOLE_URL, checkAdminAuthorization, checkPlatformAdmin } from "./sso";
 import { DASHBOARD_URL } from "./dashboard-url";
 
 /**
@@ -21,7 +21,7 @@ export type Membership = {
 };
 
 export type Access = {
-  admin: { role: string } | null;
+  admin: { role: string; console: "platform" | "legacy" } | null;
   memberships: Membership[];
   pendingInvites: number;
   /** false when the database could not be reached; callers fall back to the dashboard's own checks */
@@ -40,8 +40,9 @@ export async function resolveAccess(email: string): Promise<Access> {
     return empty;
   }
 
-  const [admin, members] = await Promise.all([
+  const [legacyAdmin, platformAdmin, members] = await Promise.all([
     checkAdminAuthorization(email),
+    checkPlatformAdmin(email),
     supabase
       .from("merchant_members")
       .select("merchant_id, role, invitation_status, merchants!inner(business_name, status, deleted_at)")
@@ -49,9 +50,16 @@ export async function resolveAccess(email: string): Promise<Access> {
       .ilike("email", email.trim().toLowerCase().replace(/[\\%_]/g, (c) => `\\${c}`)),
   ]);
 
+  // admin.payxa.in (platform_admins) takes precedence over the legacy api.payxa.in/dash console.
+  const admin: Access["admin"] = platformAdmin
+    ? { role: platformAdmin.role === "owner" ? "OWNER_ADMIN" : "PLATFORM_ADMIN", console: "platform" }
+    : legacyAdmin.isAuthorized
+      ? { role: legacyAdmin.role ?? "ADMIN", console: "legacy" }
+      : null;
+
   if (members.error) {
     console.error("[payxa] access lookup failed", members.error.message);
-    return { ...empty, admin: admin.isAuthorized ? { role: admin.role ?? "ADMIN" } : null };
+    return { ...empty, admin };
   }
 
   type Row = {
@@ -73,7 +81,7 @@ export async function resolveAccess(email: string): Promise<Access> {
   memberships.sort((a, b) => roleRank[a.role] - roleRank[b.role]);
 
   return {
-    admin: admin.isAuthorized ? { role: admin.role ?? "ADMIN" } : null,
+    admin,
     memberships,
     pendingInvites,
     resolved: true,
@@ -97,5 +105,13 @@ export const isBlocked = (m: Membership) => m.status === "SUSPENDED" || m.status
 
 export const dashboardUrl = (path: string) => `${DASHBOARD_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
-/** Admin console entry: goes through Turnstile + the signed one-time SSO ticket. */
+/** Legacy api.payxa.in/dash entry: Turnstile + the signed one-time SSO ticket. */
 export const ADMIN_ENTRY = "/api/sso/dash/authorize?dest=/dash";
+
+/**
+ * Where an admin goes after login. Platform admins start on admin.payxa.in/auth/start, which sets
+ * the state cookie and comes straight back to /api/sso/admin/authorize (Turnstile → ticket → MFA).
+ */
+export function adminEntry(admin: Access["admin"]): string {
+  return admin?.console === "platform" ? `${ADMIN_CONSOLE_URL}/auth/start` : ADMIN_ENTRY;
+}

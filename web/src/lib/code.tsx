@@ -29,22 +29,19 @@ export const snippets: { id: string; label: string; file: string; code: string }
     id: "js",
     label: "JavaScript",
     file: "checkout.html",
-    code: `<script src="https://cdn.payxa.in/v1/checkout.js"></script>
+    code: `<script src="https://checkout.payxa.in/sdk/v1/payxa.js"></script>
 <button id="pay-button">Pay with PayXa</button>
 
 <script>
   document.getElementById("pay-button").addEventListener("click", async () => {
-    // Your backend verifies the price and creates the session
+    // Your backend prices the order and creates the PayXa checkout session
     const res = await fetch("/api/create-checkout", { method: "POST" });
     if (!res.ok) return alert("Checkout unavailable");
-    const { sessionToken } = await res.json();
+    const { checkoutUrl } = await res.json();
 
-    PayXaCheckout.open({
-      sessionToken,
-      onEvent: (event) => {
-        // Display updates only. Never fulfil from the browser.
-        console.log(event.type);
-      },
+    new PayXa().open({
+      checkoutUrl, // redirect on phones (UPI apps open), popup on desktop
+      onStatus: (e) => console.log(e.state), // display only — never fulfil from the browser
     });
   });
 </script>`,
@@ -55,69 +52,78 @@ export const snippets: { id: string; label: string; file: string; code: string }
     file: "server.js",
     code: `import express from "express";
 const app = express();
+const PAYXA = "https://api.payxa.in/v1";
+const auth = { Authorization: \`Bearer \${process.env.PAYXA_SECRET_KEY}\`, "Content-Type": "application/json" };
 
 app.post("/api/create-checkout", async (req, res) => {
-  const order = await fetch("https://api.payxa.in/v1/orders", {
+  const merchantOrderId = "ORDER-" + crypto.randomUUID();
+
+  // 1. Order — integer paise, idempotent on retries
+  const order = await fetch(\`\${PAYXA}/orders\`, {
     method: "POST",
-    headers: {
-      Authorization: \`Bearer \${process.env.PAYXA_SECRET_KEY}\`,
-      "Idempotency-Key": crypto.randomUUID(),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      merchant_order_id: "ORDER-1001",
-      amount: 49900, // paise → ₹499.00
-      currency: "INR",
-      checkout: { expires_in_seconds: 300 },
-    }),
+    headers: { ...auth, "Idempotency-Key": merchantOrderId },
+    body: JSON.stringify({ merchant_order_id: merchantOrderId, amount_paise: 49900 }), // ₹499.00
   }).then((r) => r.json());
 
-  res.json({ sessionToken: order.checkout.session_token });
+  // 2. Checkout session for that order
+  const session = await fetch(\`\${PAYXA}/checkout-sessions\`, {
+    method: "POST",
+    headers: auth,
+    body: JSON.stringify({ order_id: order.data.public_id, expires_in_seconds: 900 }),
+  }).then((r) => r.json());
+
+  res.json({ checkoutUrl: session.data.checkout_url });
 });`,
   },
   {
     id: "react",
     label: "React",
     file: "PayButton.tsx",
-    code: `import { usePayXaCheckout } from "@payxa/react";
+    code: `"use client";
+import Script from "next/script";
 
-export function PayButton({ orderId }: { orderId: string }) {
-  const { open, status } = usePayXaCheckout();
+declare global {
+  interface Window { PayXa?: new () => { open(o: { checkoutUrl: string; onStatus?: (e: { state: string }) => void }): boolean } }
+}
 
+export function PayButton() {
   async function pay() {
-    const res = await fetch(\`/api/checkout/\${orderId}\`, { method: "POST" });
-    const { sessionToken } = await res.json();
-    open({ sessionToken });
+    const res = await fetch("/api/create-checkout", { method: "POST" });
+    const { checkoutUrl } = await res.json();
+    new window.PayXa!().open({ checkoutUrl });
   }
 
   return (
-    <button onClick={pay} disabled={status === "verifying"}>
-      {status === "verified" ? "Paid ✓" : "Pay with PayXa"}
-    </button>
+    <>
+      <Script src="https://checkout.payxa.in/sdk/v1/payxa.js" strategy="afterInteractive" />
+      <button onClick={pay}>Pay with PayXa</button>
+    </>
   );
 }`,
   },
   {
     id: "php",
     label: "PHP",
-    file: "create-order.php",
+    file: "create-checkout.php",
     code: `<?php
-$ch = curl_init("https://api.payxa.in/v1/orders");
-curl_setopt_array($ch, [
-  CURLOPT_POST => true,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_HTTPHEADER => [
-    "Authorization: Bearer " . getenv("PAYXA_SECRET_KEY"),
-    "Content-Type: application/json",
-  ],
-  CURLOPT_POSTFIELDS => json_encode([
-    "merchant_order_id" => "ORDER-1001",
-    "amount" => 49900,
-    "currency" => "INR",
-  ]),
-]);
-$order = json_decode(curl_exec($ch), true);
-echo $order["checkout"]["session_token"];`,
+function payxa(string $path, array $body, array $headers = []): array {
+  $ch = curl_init("https://api.payxa.in/v1" . $path);
+  curl_setopt_array($ch, [
+    CURLOPT_POST => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => array_merge([
+      "Authorization: Bearer " . getenv("PAYXA_SECRET_KEY"),
+      "Content-Type: application/json",
+    ], $headers),
+    CURLOPT_POSTFIELDS => json_encode($body),
+  ]);
+  return json_decode(curl_exec($ch), true)["data"];
+}
+
+$ref = "ORDER-" . bin2hex(random_bytes(6));
+$order = payxa("/orders", ["merchant_order_id" => $ref, "amount_paise" => 49900], ["Idempotency-Key: $ref"]);
+$session = payxa("/checkout-sessions", ["order_id" => $order["public_id"]]);
+echo json_encode(["checkoutUrl" => $session["checkout_url"]]);`,
   },
   {
     id: "python",
@@ -127,37 +133,35 @@ echo $order["checkout"]["session_token"];`,
 from flask import Flask, request, abort
 
 app = Flask(__name__)
-SECRET = b"whsec_test_..."
+SECRET = b"your_endpoint_signing_secret"
 
 @app.post("/webhooks/payxa")
 def payxa_webhook():
-    ts = request.headers["PayXa-Timestamp"]
-    sig = request.headers["PayXa-Signature"]
+    # Header: X-PayXa-Signature: t=<unix seconds>,v1=<hex hmac>
+    parts = dict(p.split("=", 1) for p in request.headers["X-PayXa-Signature"].split(","))
+    ts, sig = parts["t"], parts["v1"]
     if abs(time.time() - int(ts)) > 300:
         abort(400)  # replay protection
-    expected = hmac.new(SECRET, f"{ts}.".encode() + request.data, hashlib.sha256).hexdigest()
+    expected = hmac.new(SECRET, f"{ts}.".encode() + request.get_data(), hashlib.sha256).hexdigest()
     if not hmac.compare_digest(expected, sig):
         abort(401)
 
     event = request.get_json()
     if event["type"] == "payment.verified":
-        fulfil_once(event["data"]["order_id"], event["id"])  # idempotent
+        fulfil_once(event["data"]["order_id"], event["id"])  # idempotent on event id
     return "", 200`,
   },
 ];
 
 export const webhookSample = `{
-  "id": "evt_example_1001",
+  "id": "pevt_example_1001",
   "type": "payment.verified",
   "created_at": "2026-11-20T14:00:00Z",
   "data": {
-    "merchant_id": "merch_example_01",
-    "order_id": "ORDER-1001",
-    "payment_id": "pay_example_01",
-    "amount": 49900,
-    "currency": "INR",
-    "status": "PAYMENT_VERIFIED",
-    "verification_source": "BANK_PSP"
+    "order_id": "ord_example_1001",
+    "merchant_order_id": "ORDER-1001",
+    "amount_paise": 49900,
+    "currency": "INR"
   }
 }`;
 

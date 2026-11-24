@@ -12,27 +12,28 @@ import { useCheckout } from "@/components/checkout/CheckoutProvider";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const code = `<!-- 1. Add the PayXa script -->
-<script src="https://cdn.payxa.in/v1/checkout.js"></script>
+<script src="https://checkout.payxa.in/sdk/v1/payxa.js"></script>
 <button id="pay">Pay with PayXa</button>
 
 <script>
   pay.onclick = async () => {
-    // 2. Your server creates the order
-    const { sessionToken } = await fetch("/api/orders", {
+    // 2. Your server creates the order + checkout session
+    const { checkoutUrl } = await fetch("/api/create-checkout", {
       method: "POST",
     }).then((r) => r.json());
 
     // 3. PayXa opens checkout + alerts your phone
-    PayXaCheckout.open({
-      sessionToken,
-      onEvent: (e) => updateUI(e.type),
+    new PayXa().open({
+      checkoutUrl,
+      onStatus: (e) => updateUI(e.state),
     });
   };
 </script>
 
 // 4. Fulfil only on the signed webhook (server)
-app.post("/webhooks/payxa", (req, res) => {
-  const event = payxa.webhooks.verify(req);
+app.post("/webhooks/payxa", express.raw({ type: "*/*" }), (req, res) => {
+  if (!verifyPayXaSignature(req.headers["x-payxa-signature"], req.body)) return res.sendStatus(401);
+  const event = JSON.parse(req.body);
   if (event.type === "payment.verified") fulfil(event.data.order_id);
   res.sendStatus(200);
 });`;
