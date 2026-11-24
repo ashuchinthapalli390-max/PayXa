@@ -3,6 +3,7 @@ import "@fontsource-variable/unbounded";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
+import AutofillGuard from "@/components/AutofillGuard";
 import { CheckoutProvider } from "@/components/checkout/CheckoutProvider";
 import { site } from "@/lib/site";
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         <CheckoutProvider>{children}</CheckoutProvider>
+        <AutofillGuard />
       </body>
     </html>
   );
