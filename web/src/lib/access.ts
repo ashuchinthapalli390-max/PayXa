@@ -88,9 +88,12 @@ export async function resolveAccess(email: string): Promise<Access> {
   };
 }
 
-/** Where a merchant member lands in the dashboard, by role and workspace status. */
+/**
+ * Where a merchant member lands in the dashboard, by role. Workspace status no longer diverts to a
+ * waiting page: the dashboard itself resumes unfinished onboarding, and KYC/provider review is shown
+ * inside the dashboard as account readiness.
+ */
 export function merchantLanding(m: Membership): string {
-  if (m.status === "DRAFT" || m.status === "PENDING_REVIEW") return "/guide";
   switch (m.role) {
     case "DEVELOPER":
       return "/developers";
