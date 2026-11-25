@@ -30,13 +30,12 @@ function useCountdown(startedAt: number, active: boolean, total = 300) {
 
 const steps = [
   { key: "awaiting", label: "Awaiting payment" },
-  { key: "detected", label: "Payment detected" },
-  { key: "verifying", label: "Verifying with bank" },
-  { key: "verified", label: "Payment verified" },
+  { key: "detected", label: "Notification matched (timestamp + payer)" },
+  { key: "observed", label: "Completed by observation (receipt sent)" },
 ] as const;
 
 export default function CheckoutModal() {
-  const { open, status, order, startedAt, close, complete, fail, retry } = useCheckout();
+  const { open, status, order, startedAt, close, complete, verifyWithBank, fail, retry } = useCheckout();
   const [tab, setTab] = useState<"qr" | "app">("qr");
   const [copied, setCopied] = useState(false);
   const countdown = useCountdown(startedAt, open && status === "awaiting");
@@ -55,7 +54,8 @@ export default function CheckoutModal() {
   }, [open, order?.id]);
 
   const idx = steps.findIndex((s) => s.key === status);
-  const done = status === "verified";
+  const done = status === "observed" || status === "verified";
+  const isBankVerified = status === "verified";
   const bad = status === "failed" || status === "expired";
 
   return (
@@ -128,19 +128,32 @@ export default function CheckoutModal() {
                     >
                       <Check size={38} strokeWidth={3} />
                     </motion.span>
-                    <div className="mt-6 font-display text-xl font-semibold uppercase">Payment successful</div>
+                    <div className="mt-6 font-display text-xl font-semibold uppercase">
+                      {isBankVerified ? "Payment bank verified" : "Payment received via notification"}
+                    </div>
                     <p className="mt-2 text-[14px] text-muted">
-                      {formatINR(order.amount)} paid to {order.merchant}
+                      {isBankVerified
+                        ? `${formatINR(order.amount)} settled to ${order.merchant}`
+                        : `${formatINR(order.amount)} observed on merchant phone · Receipt PDF emailed`}
                     </p>
                     <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 text-left font-mono text-[11px]">
                       <span className="text-dim">Order</span>
                       <span className="text-right text-paper">{order.id}</span>
                       <span className="text-dim">Status</span>
-                      <span className="text-right text-ok">PAYMENT_VERIFIED</span>
+                      <span className={`text-right ${isBankVerified ? "text-ok" : "text-sky-300"}`}>
+                        {isBankVerified ? "PAYMENT_VERIFIED" : "COMPLETED_BY_OBSERVATION"}
+                      </span>
                       <span className="text-dim">Source</span>
-                      <span className="text-right text-paper">BANK_PSP</span>
+                      <span className="text-right text-paper">{isBankVerified ? "BANK_PSP" : "PAYTM_NOTIFICATION"}</span>
+                      <span className="text-dim">Bank verified</span>
+                      <span className="text-right text-paper">{isBankVerified ? "true" : "false (observation)"}</span>
                     </div>
-                    <button onClick={close} className="btn btn-primary mt-6 w-full">
+                    {!isBankVerified && (
+                      <button onClick={verifyWithBank} className="btn btn-ghost btn-sm mt-3 w-full">
+                        Optional: simulate independent bank/PSP upgrade
+                      </button>
+                    )}
+                    <button onClick={close} className="btn btn-primary mt-3 w-full">
                       Return to {order.merchant}
                     </button>
                   </motion.div>

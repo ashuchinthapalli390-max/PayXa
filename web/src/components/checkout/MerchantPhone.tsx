@@ -14,20 +14,28 @@ export default function MerchantPhone({ className = "" }: { className?: string }
   const amount = order ? formatINR(order.amount) : "";
   const cards = [
     started && { k: "start", icon: BellRing, title: "Payment Started", amount, sub: `Order ${order?.id} · Awaiting customer`, tone: "text-neon", ring: "border-crimson/40" },
-    (status === "detected" || status === "verifying" || status === "verified") && {
+    (status === "detected" || status === "observed" || status === "verifying" || status === "verified") && {
       k: "det",
       icon: Radar,
-      title: "Incoming Credit Detected",
-      amount: `${amount} · Verifying`,
+      title: "PayXa — Payment Detected",
+      amount: `${amount} · Matched by time & payer`,
       sub: "Matched to active checkout",
       tone: "text-warn",
       ring: "border-warn/40",
     },
-    status === "verified" && { k: "ver", icon: ShieldCheck, title: "Payment Verified", amount: `${amount} · Successful`, sub: "Trusted confirmation received", tone: "text-ok", ring: "border-ok/40" },
+    (status === "observed" || status === "verified") && {
+      k: "obs",
+      icon: ShieldCheck,
+      title: status === "verified" ? "Payment Bank Verified" : "Checkout Completed (Notification)",
+      amount: status === "verified" ? `${amount} · BANK_PSP` : `${amount} · Receipt issued`,
+      sub: status === "verified" ? "Trusted bank/PSP confirmation" : "bank_verified: false (observation)",
+      tone: "text-ok",
+      ring: "border-ok/40",
+    },
   ].filter(Boolean) as { k: string; icon: typeof BellRing; title: string; amount: string; sub: string; tone: string; ring: string }[];
 
   const base = 2495000;
-  const total = status === "verified" && order ? base + order.amount : base;
+  const total = (status === "observed" || status === "verified") && order ? base + order.amount : base;
 
   return (
     <PhoneFrame className={className}>
@@ -102,7 +110,7 @@ export function EventStream({ className = "", title = "Event stream" }: { classN
             <span className={`${tone[l.tone]} break-all`}>{l.text}</span>
           </motion.li>
         ))}
-        {events.length > 0 && status !== "verified" && status !== "expired" && <li className="caret text-dim" />}
+        {events.length > 0 && status !== "observed" && status !== "verified" && status !== "expired" && <li className="caret text-dim" />}
       </ol>
     </div>
   );

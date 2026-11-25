@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import CheckoutModal from "./CheckoutModal";
 
-export type PayStatus = "idle" | "awaiting" | "detected" | "verifying" | "verified" | "failed" | "expired";
+export type PayStatus = "idle" | "awaiting" | "detected" | "observed" | "verifying" | "verified" | "failed" | "expired";
 
 export type CheckoutOrder = {
   id: string;
@@ -23,6 +23,7 @@ type Ctx = {
   openCheckout: (o?: Partial<CheckoutOrder>) => void;
   close: () => void;
   complete: () => void;
+  verifyWithBank: () => void;
   fail: () => void;
   retry: () => void;
 };
@@ -93,21 +94,41 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     if (!order) return;
     clear();
     const amt = order.amount;
-    push("customer", "Customer approved payment in UPI app", "muted");
+    push("customer", "Customer entered email & approved payment in UPI app", "muted");
     timers.current.push(
       window.setTimeout(() => {
         setStatus("detected");
-        push("payment.detected", `payment.detected · ${amt} paise · unique match ${order.id}`, "warn");
+        push("payment.detected", `payment.detected · ${amt} paise · timestamp & payer matched ${order.id}`, "warn");
       }, 1100),
       window.setTimeout(() => {
-        setStatus("verifying");
-        push("payment.verifying", "payment.verifying · awaiting trusted confirmation", "warn");
-      }, 2000),
+        setStatus("observed");
+        push(
+          "checkout.observation_completed",
+          "checkout.observation_completed · PAYTM_NOTIFICATION (bank_verified: false)",
+          "ok"
+        );
+      }, 2200),
+      window.setTimeout(
+        () => push("receipt", "receipt.issued · canonical PDF & Resend email dispatched", "ok"),
+        2700
+      ),
+      window.setTimeout(
+        () => push("webhook", "POST merchant /webhooks/payxa → payment.observation_completed (200)", "ok"),
+        3200
+      ),
+    );
+  }, [order, push]);
+
+  const verifyWithBank = useCallback(() => {
+    if (!order) return;
+    clear();
+    setStatus("verifying");
+    push("payment.verifying", "payment.verifying · reconciling with bank/PSP feed", "warn");
+    timers.current.push(
       window.setTimeout(() => {
         setStatus("verified");
-        push("payment.verified", "payment.verified · source BANK_PSP", "ok");
-      }, 3400),
-      window.setTimeout(() => push("webhook", "POST merchant /webhooks/payxa → 200 (signed)", "ok"), 3900),
+        push("payment.verified", "payment.verified · source BANK_PSP · receipt upgraded", "ok");
+      }, 1200)
     );
   }, [order, push]);
 
@@ -126,7 +147,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <CheckoutCtx.Provider value={{ open, status, order, events, startedAt, openCheckout, close, complete, fail, retry }}>
+    <CheckoutCtx.Provider value={{ open, status, order, events, startedAt, openCheckout, close, complete, verifyWithBank, fail, retry }}>
       {children}
       <CheckoutModal />
     </CheckoutCtx.Provider>
