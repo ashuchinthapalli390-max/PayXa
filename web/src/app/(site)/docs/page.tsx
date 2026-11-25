@@ -85,8 +85,7 @@ export default function DocsPage() {
                     <strong>Amounts are in paise.</strong> <code className="text-paper">49900</code> means ₹499.00.
                   </p>
                   <p>
-                    <strong>Detected is not verified.</strong> A detected payment has evidence (for example a credit alert) matched to
-                    one order. A verified payment has trusted confirmation from a bank or PSP source. Never fulfil on detected.
+                    <strong>Detected is not bank-verified.</strong> When a merchant&apos;s paired phone sees a matching payment notification (or bank credit SMS), PayXa matches it to the order and completes customer checkout immediately as <code className="text-paper">COMPLETED_BY_OBSERVATION</code> (<code className="text-paper">checkout.observation_completed</code>) with <code className="text-paper">bank_verified: false</code>. Full financial settlement verification requires a trusted bank/PSP feed (<code className="text-paper">payment.verified</code>).
                   </p>
                   <p>
                     <strong>Frontend events are display-only.</strong> Callbacks from the checkout script update your UI. Fulfilment

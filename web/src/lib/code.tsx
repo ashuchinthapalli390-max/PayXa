@@ -182,6 +182,7 @@ export const endpoints: [string, string, string][] = [
 
 export const webhookEvents: [string, string][] = [
   ["checkout.started", "A customer opened a new checkout session"],
+  ["checkout.observation_completed", "Checkout completed from matched payment notification (unverified by bank)"],
   ["checkout.expired", "The session expired without verified payment"],
   ["payment.detected", "Credit evidence arrived and matched an order"],
   ["payment.verifying", "Waiting on trusted bank/PSP confirmation"],
