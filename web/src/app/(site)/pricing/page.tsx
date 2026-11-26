@@ -5,8 +5,21 @@ import Pricing from "@/components/home/Pricing";
 import FAQ from "@/components/home/FAQ";
 import FinalCTA from "@/components/home/FinalCTA";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Pricing" };
+export const metadata: Metadata = {
+  title: "PayXa Pricing — Transparent ₹0 Platform Fee",
+  description:
+    "PayXa charges ₹0 platform fees on the V1 Free Starter plan. PayXa does not hold or settle funds, so there are no settlement commissions.",
+  alternates: { canonical: `${site.url}/pricing` },
+  openGraph: {
+    title: "PayXa Pricing — Transparent ₹0 Platform Fee",
+    description: "Proposed V1 Free Starter plan with ₹0 PayXa platform fee.",
+    url: `${site.url}/pricing`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Pricing" }],
+  },
+};
 
 const rows: [string, string, string][] = [
   ["PayXa platform fee", "₹0", "Free Starter plan"],
@@ -19,6 +32,12 @@ const rows: [string, string, string][] = [
 export default function PricingPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Pricing", url: "/pricing" },
+        ]}
+      />
       <PageHero
         scene="rupee"
         side="right"

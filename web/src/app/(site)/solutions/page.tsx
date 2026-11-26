@@ -6,8 +6,21 @@ import { SpotlightCard } from "@/components/fx/Interactive";
 import HorizontalRail from "@/components/fx/HorizontalRail";
 import { SectionHeader } from "@/components/ui/Section";
 import Scene from "@/components/three/Scene";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Solutions" };
+export const metadata: Metadata = {
+  title: "PayXa Solutions — Built for Indian Commerce",
+  description:
+    "Tailored UPI payment workflows for D2C brands, online courses, retail counters, cafés, freelancers, agencies, and event organizers.",
+  alternates: { canonical: `${site.url}/solutions` },
+  openGraph: {
+    title: "PayXa Solutions — Built for How India Gets Paid",
+    description: "UPI automation for D2C brands, retail counters, online courses, and agencies.",
+    url: `${site.url}/solutions`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Solutions" }],
+  },
+};
 
 const cases = [
   { icon: ShoppingBag, title: "D2C online stores", body: "Hosted checkout or the JS SDK on your store. Fulfil on the signed payment.verified webhook.", tools: ["Checkout", "Webhooks", "API"] },
@@ -23,6 +36,12 @@ const cases = [
 export default function SolutionsPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Solutions", url: "/solutions" },
+        ]}
+      />
       <PageHero
         eyebrow="Solutions"
         title={"Built for how\nIndia gets paid."}

@@ -3,8 +3,21 @@ import Image from "next/image";
 import PageHero, { Prose } from "@/components/ui/PageHero";
 import FinalCTA from "@/components/home/FinalCTA";
 import { Reveal, WipeReveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "About" };
+export const metadata: Metadata = {
+  title: "About PayXa — Official Platform & Architecture",
+  description:
+    "PayXa is built by CodeXa Agency to give Indian merchants, startups and developers a direct, transparent way to accept UPI and automate payment reconciliation.",
+  alternates: { canonical: `${site.url}/about` },
+  openGraph: {
+    title: "About PayXa — Official Platform & Architecture",
+    description: "Learn about PayXa direct UPI payment automation and reconciliation software developed by CodeXa Agency.",
+    url: `${site.url}/about`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "About PayXa" }],
+  },
+};
 
 const values = [
   ["Truth over speed", "We would rather show 'verifying' than a false 'success'."],
@@ -16,6 +29,12 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "About PayXa", url: "/about" },
+        ]}
+      />
       <PageHero
         scene="coin"
         side="right"
@@ -30,7 +49,14 @@ export default function AboutPage() {
             <div className="relative grid aspect-square place-items-center overflow-hidden rounded-[20px] border border-white/[0.06] bg-ink">
               <div className="grid-bg absolute inset-0 opacity-30" />
               <div className="floor-grid !h-[40%]" />
-              <Image src="/brand/payxa-lockup.png" alt="PayXa logo" width={720} height={720} className="relative w-[78%]" />
+              <Image
+                src="/brand/payxa-lockup.png"
+                alt="PayXa Official Logo - UPI Payment Automation Platform by CodeXa Agency"
+                width={720}
+                height={720}
+                priority
+                className="relative w-[78%]"
+              />
             </div>
           </WipeReveal>
           <Reveal>
@@ -51,8 +77,30 @@ export default function AboutPage() {
                 PayXa is open for merchant sign-up. Merchants create an account, verify their business and integrate through the
                 dashboard and API. Each merchant goes live after its verification and review are complete.
               </p>
+              <h2>Payment Observation vs Verified Settlement</h2>
+              <p>
+                PayXa maintains a strict security boundary: a phone credit alert only marks a payment as &ldquo;detected&rdquo;. Orders are marked &ldquo;verified&rdquo; only after authoritative confirmation from trusted banking or PSP sources.
+              </p>
             </Prose>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Architecture Diagram */}
+      <section className="container-px pb-20">
+        <div className="card overflow-hidden p-6 md:p-10">
+          <div className="eyebrow mb-4">Architecture & Data Flow</div>
+          <h3 className="font-display text-xl font-bold uppercase text-paper mb-6">
+            Direct-to-Merchant Payment Flow
+          </h3>
+          <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-xl border border-white/[0.06] bg-black">
+            <Image
+              src="/brand/payxa-architecture-diagram.svg"
+              alt="PayXa direct-to-merchant UPI payment architecture diagram - zero intermediary pooling and instant phone push alerts"
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
       </section>
       <section className="container-px pb-16">

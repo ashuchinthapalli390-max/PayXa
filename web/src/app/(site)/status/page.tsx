@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/ui/PageHero";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { DASHBOARD_URL } from "@/lib/dashboard-url";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "System status" };
+export const metadata: Metadata = {
+  title: "PayXa System Status & Service Health",
+  description:
+    "Real-time operational status for PayXa services: Central API, Checkout, Webhook delivery, and Merchant Dashboard.",
+  alternates: { canonical: `${site.url}/status` },
+  openGraph: {
+    title: "PayXa System Status & Service Health",
+    description: "Live operational status of the PayXa payment automation platform.",
+    url: `${site.url}/status`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa System Status" }],
+  },
+};
+
 // Re-probe the services at most once a minute.
 export const revalidate = 60;
 
@@ -48,6 +62,12 @@ export default async function StatusPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "System Status", url: "/status" },
+        ]}
+      />
       <PageHero
         scene="grid"
         side="center"

@@ -10,9 +10,22 @@ import Integrations from "@/components/home/Integrations";
 import FinalCTA from "@/components/home/FinalCTA";
 import { SectionHeader } from "@/components/ui/Section";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { endpoints, highlight, webhookEvents, webhookSample } from "@/lib/code";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Developers" };
+export const metadata: Metadata = {
+  title: "PayXa Developer Platform — REST APIs, SDKs & Webhooks",
+  description:
+    "Integrate PayXa UPI checkout into your web and mobile applications. REST API, JavaScript SDK, idempotent order creation, and HMAC-SHA256 signed webhooks.",
+  alternates: { canonical: `${site.url}/developers` },
+  openGraph: {
+    title: "PayXa Developer Platform — REST APIs, SDKs & Webhooks",
+    description: "Build on PayXa with REST APIs, JavaScript SDK, and signed webhooks.",
+    url: `${site.url}/developers`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Developer Platform" }],
+  },
+};
 
 const webhookSecurity = [
   "HMAC-SHA256 signature",
@@ -30,6 +43,12 @@ const webhookSecurity = [
 export default function DevelopersPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Developers", url: "/developers" },
+        ]}
+      />
       <PageHero
         scene="helix"
         side="right"

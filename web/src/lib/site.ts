@@ -1,9 +1,20 @@
 export const site = {
   name: "PayXa",
-  tagline: "Payments. Connected.",
+  brandSpelling: "PayXa",
+  legalName: "PayXa (CodeXa Agency)",
+  tagline: "UPI Payment Automation for Indian Businesses",
+  title: "PayXa — UPI Payment Automation for Indian Businesses",
   description:
-    "UPI-first checkout with instant merchant alerts, live payment tracking, developer-friendly integrations and trusted verification. A CodeXa Agency ecosystem product.",
+    "PayXa helps Indian businesses manage UPI payment links, QR checkout, merchant payment notifications, developer integrations and automated payment reconciliation. Engineered by CodeXa Agency.",
   url: "https://payxa.in",
+  locale: "en_IN",
+  foundingLocation: "India",
+  publisher: "CodeXa Agency",
+  publisherUrl: "https://codexa.agency",
+  supportEmail: "support@payxa.in",
+  logoUrl: "https://payxa.in/brand/payxa-lockup.png",
+  iconUrl: "https://payxa.in/brand/payxa-mark.png",
+  ogImageUrl: "https://payxa.in/brand/payxa-og-card.png",
 };
 
 export type NavItem = { label: string; href: string; desc?: string };
@@ -39,6 +50,7 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
       { label: "Developer hub", href: "/developers" },
       { label: "Documentation", href: "/docs" },
       { label: "Integrations", href: "/integrations" },
+      { label: "OpenAPI Spec", href: "/openapi.json" },
       { label: "System status", href: "/status" },
     ],
   },
@@ -46,6 +58,7 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
     title: "Company",
     links: [
       { label: "About PayXa", href: "/about" },
+      { label: "Brand Media Kit", href: "/brand" },
       { label: "Security", href: "/security" },
       { label: "Contact", href: "/contact" },
       { label: "Help center", href: "/help" },

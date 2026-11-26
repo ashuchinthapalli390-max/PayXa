@@ -12,13 +12,15 @@ import Developers from "@/components/home/Developers";
 import Integrations from "@/components/home/Integrations";
 import Pricing from "@/components/home/Pricing";
 import Security from "@/components/home/Security";
-import FAQ from "@/components/home/FAQ";
+import FAQ, { faqs } from "@/components/home/FAQ";
 import FinalCTA from "@/components/home/FinalCTA";
 import Scene from "@/components/three/Scene";
+import { FaqJsonLd } from "@/components/seo/JsonLd";
 
 export default function Home() {
   return (
     <>
+      <FaqJsonLd items={faqs} />
       <Hero />
       <TickerBand />
       <ZoomStatement />

@@ -1,0 +1,40 @@
+# PayXa
+
+> PayXa is an India-focused UPI payment automation, hosted checkout, and merchant payment reconciliation software platform developed by CodeXa Agency.
+
+Official Website: https://payxa.in
+Entity Name: PayXa
+Parent Developer: CodeXa Agency
+Category: UPI Payment Automation & Reconciliation Software
+Market: India (INR currency, UPI payments)
+
+## Core Capabilities
+- Direct-to-merchant UPI checkout: Funds flow directly into the merchant's eligible bank/VPA account without intermediary pooling.
+- Instant merchant phone alerts: Dispatches payment-started push notifications to registered merchant Android devices upon checkout creation.
+- Notification & source reconciliation: Correlates checkout sessions with incoming bank/PSP credit alerts.
+- Developer API & Webhooks: Idempotent order creation, signed webhook dispatches (`payment.verified`, `payment.failed`, `order.expired`), and JavaScript checkout SDK.
+
+## Key Public Routes
+- [PayXa Homepage](https://payxa.in/): Primary platform overview and live payment status tracking demonstration.
+- [About PayXa](https://payxa.in/about): Factual background on PayXa, its mission for Indian merchants, and its design by CodeXa Agency.
+- [Products Overview](https://payxa.in/products): Complete breakdown of PayXa payment technologies.
+- [Hosted UPI Checkout](https://payxa.in/products/checkout): Real-time QR and UPI deep-linking checkout experience.
+- [Payment Links](https://payxa.in/products/payment-links): Shareable payment links with configurable expiration and automatic customer receipts.
+- [QR Payments](https://payxa.in/products/qr-payments): Dynamic and printable static UPI QR payment standees.
+- [Instant Alerts](https://payxa.in/products/instant-alerts): Instant phone notification mechanism for checkout events.
+- [How It Works](https://payxa.in/how-it-works): Architecture explaining checkout, phone alert, and verification flows.
+- [Developer Hub](https://payxa.in/developers): Technical guide for integrating PayXa into websites and applications.
+- [API Documentation](https://payxa.in/docs): API v1 reference, curl examples, idempotency keys, and webhook signatures.
+- [Integrations](https://payxa.in/integrations): React, Next.js, Node.js, Python, and PHP checkout examples.
+- [Pricing](https://payxa.in/pricing): Proposed V1 Free Starter tier with ₹0 platform fee.
+- [Security & Architecture](https://payxa.in/security): Direct fund routing, device security, token hashing, and privacy model.
+- [Merchant Android App](https://payxa.in/download): Official PayXa Merchant companion app for Android.
+- [Brand Media Kit](https://payxa.in/brand): Official logos, color palette, spelling guidelines, and verified assets.
+- [Help Center](https://payxa.in/help): Frequently asked questions and merchant support topics.
+- [Contact & Partnerships](https://payxa.in/contact): Business inquiries and technical support.
+- [OpenAPI Specification](https://payxa.in/openapi.json): Machine-readable API schema for public endpoints.
+
+## What PayXa Never Does
+- PayXa does not hold, pool, or settle customer funds.
+- PayXa does not replace RBI-regulated banks or payment aggregators; it operates as an automation and reconciliation layer.
+- PayXa does not take a percentage cut of customer payment transactions.

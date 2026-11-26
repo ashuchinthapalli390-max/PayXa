@@ -4,12 +4,31 @@ import Scene from "@/components/three/Scene";
 import Security from "@/components/home/Security";
 import FinalCTA from "@/components/home/FinalCTA";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Security" };
+export const metadata: Metadata = {
+  title: "PayXa Security & Direct UPI Architecture",
+  description:
+    "How PayXa handles device permissions, direct account fund flow, HMAC-SHA256 tokens, and server-authoritative payment verification in plain language.",
+  alternates: { canonical: `${site.url}/security` },
+  openGraph: {
+    title: "PayXa Security & Direct UPI Architecture",
+    description: "Permissions, privacy, direct-to-merchant payment security, and data handling at PayXa.",
+    url: `${site.url}/security`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Security" }],
+  },
+};
 
 export default function SecurityPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Security", url: "/security" },
+        ]}
+      />
       <PageHero
         scene="shield"
         side="right"

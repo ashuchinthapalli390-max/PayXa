@@ -1,0 +1,269 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PayXa Central Backend API",
+    "version": "1.0.0",
+    "description": "Merchant-facing UPI checkout coordination and payment monitoring platform. Connects PayXa Dashboard, Customer Checkout, Android Device App, and external merchant backends.",
+    "contact": {
+      "name": "PayXa Developer Support",
+      "email": "support@payxa.in",
+      "url": "https://payxa.in/docs"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.payxa.in/v1",
+      "description": "Production API Server"
+    },
+    {
+      "url": "https://payxa-api.payxa.workers.dev/v1",
+      "description": "Cloudflare Workers Development / Sandbox Server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Liveness probe",
+        "description": "Returns minimal health status without authentication.",
+        "responses": {
+          "200": {
+            "description": "Service healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "service": { "type": "string", "example": "payxa-api" },
+                    "version": { "type": "string", "example": "v1" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/system/status": {
+      "get": {
+        "summary": "System status and feature flags",
+        "description": "Returns service configuration and feature enablement without exposing secrets.",
+        "responses": {
+          "200": {
+            "description": "Operational status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders": {
+      "post": {
+        "summary": "Create payment order",
+        "security": [
+          { "ApiKeyAuth": [] }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "schema": { "type": "string" },
+            "description": "Unique key to prevent duplicate order creation on network retries"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "summary": "List merchant orders",
+        "security": [
+          { "ApiKeyAuth": [] }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": { "type": "integer", "default": 20 }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": { "type": "integer", "default": 0 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of merchant orders"
+          }
+        }
+      }
+    },
+    "/v1/checkout-sessions": {
+      "post": {
+        "summary": "Create checkout session for order",
+        "security": [
+          { "ApiKeyAuth": [] }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["order_id"],
+                "properties": {
+                  "order_id": { "type": "string" },
+                  "expires_in_seconds": { "type": "integer", "default": 300 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Checkout session created with dynamic UPI QR and intent instructions"
+          }
+        }
+      }
+    },
+    "/v1/checkout-sessions/{id}/status": {
+      "get": {
+        "summary": "Poll checkout session status",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current checkout status (AWAITING, DETECTED, VERIFIED, EXPIRED, FAILED)"
+          }
+        }
+      }
+    },
+    "/v1/checkout-sessions/{id}/start": {
+      "post": {
+        "summary": "Signal checkout intent initiation",
+        "description": "Customer opened UPI app or scanned QR. Triggers instant checkout.started push alert to paired merchant phones.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Checkout started alert queued"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Bearer pxa_live_... or pxa_test_..."
+      }
+    },
+    "schemas": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "data": { "type": "object" }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "request_id": { "type": "string" }
+            }
+          }
+        }
+      },
+      "CreateOrderRequest": {
+        "type": "object",
+        "required": ["merchant_order_id", "amount"],
+        "properties": {
+          "merchant_order_id": { "type": "string", "example": "ORDER-1001" },
+          "amount": { "type": "integer", "description": "Amount in paise (e.g. 49900 = ₹499.00)", "example": 49900 },
+          "currency": { "type": "string", "default": "INR" },
+          "description": { "type": "string", "example": "Course Purchase" },
+          "checkout": {
+            "type": "object",
+            "properties": {
+              "expires_in_seconds": { "type": "integer", "default": 300 }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ApiError" }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Invalid input parameters",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ApiError" }
+          }
+        }
+      }
+    }
+  }
+}

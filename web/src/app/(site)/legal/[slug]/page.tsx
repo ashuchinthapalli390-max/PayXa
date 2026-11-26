@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHero, { Prose } from "@/components/ui/PageHero";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
 const docs: Record<string, { title: string; body: { h: string; p: string }[] }> = {
   terms: {
@@ -46,7 +48,19 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  return { title: docs[slug]?.title ?? "Legal" };
+  const d = docs[slug];
+  const pageTitle = d?.title ?? "Legal Documentation";
+  return {
+    title: `${pageTitle} — PayXa`,
+    description: `Official PayXa ${pageTitle.toLowerCase()}. Direct payment automation technology terms, privacy, and permissions.`,
+    alternates: { canonical: `${site.url}/legal/${slug}` },
+    openGraph: {
+      title: `${pageTitle} — PayXa`,
+      description: `Official PayXa ${pageTitle.toLowerCase()}.`,
+      url: `${site.url}/legal/${slug}`,
+      images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: pageTitle }],
+    },
+  };
 }
 
 export default async function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -55,6 +69,13 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
   if (!d) notFound();
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Legal", url: "/legal/terms" },
+          { name: d.title, url: `/legal/${slug}` },
+        ]}
+      />
       <PageHero scene="cube" side="right" eyebrow="Legal · Draft" title={d.title} description="Draft pending professional legal review. Not yet in force." />
       <section className="container-px pb-28">
         <Prose>

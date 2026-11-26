@@ -1,11 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Braces, Rocket, Smartphone, Webhook, Wrench } from "lucide-react";
+import { BookOpen, Braces, Rocket, Smartphone, Webhook, Wrench, FileCode2 } from "lucide-react";
 import { Prose } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { highlight } from "@/lib/code";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Docs" };
+export const metadata: Metadata = {
+  title: "PayXa Developer Documentation · API v1 Reference",
+  description:
+    "Official developer documentation for PayXa: quickstart, order creation curl examples, webhook signature verification, device pairing, and sandbox testing.",
+  alternates: { canonical: `${site.url}/docs` },
+  openGraph: {
+    title: "PayXa Developer Documentation · API v1 Reference",
+    description: "Official API reference, webhooks, and SDK integration guide for PayXa.",
+    url: `${site.url}/docs`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Developer Documentation" }],
+  },
+};
 
 const nav = [
   { id: "quickstart", label: "Quickstart", icon: Rocket },
@@ -39,6 +52,13 @@ function Code({ code }: { code: string }) {
 export default function DocsPage() {
   return (
     <div className="container-px pt-[calc(var(--nav-h)+48px)] pb-28" data-scene="helix" data-side="right">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Developers", url: "/developers" },
+          { name: "Documentation", url: "/docs" },
+        ]}
+      />
       <div className="grid grid-cols-1 [&>*]:min-w-0 gap-12 lg:grid-cols-[240px_1fr]">
         <aside className="lg:sticky lg:top-28 lg:self-start">
           <div className="eyebrow">Documentation · API v1</div>
@@ -52,6 +72,13 @@ export default function DocsPage() {
                 <n.icon size={15} className="text-neon" /> {n.label}
               </a>
             ))}
+            <Link
+              href="/openapi.json"
+              target="_blank"
+              className="mt-3 flex shrink-0 items-center gap-3 rounded-xl border border-white/[0.08] px-3 py-2.5 text-[13px] text-neon hover:bg-white/[0.04]"
+            >
+              <FileCode2 size={15} /> OpenAPI Spec (JSON)
+            </Link>
           </nav>
         </aside>
 

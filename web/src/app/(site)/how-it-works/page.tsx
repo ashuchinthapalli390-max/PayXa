@@ -7,8 +7,21 @@ import Scene from "@/components/three/Scene";
 import FinalCTA from "@/components/home/FinalCTA";
 import { SectionHeader } from "@/components/ui/Section";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "How it works" };
+export const metadata: Metadata = {
+  title: "How PayXa Works — UPI Payment Architecture & Reconciliation",
+  description:
+    "Learn how PayXa connects hosted UPI checkout, instant Android phone alerts, and banking reconciliation to verify orders in real-time.",
+  alternates: { canonical: `${site.url}/how-it-works` },
+  openGraph: {
+    title: "How PayXa Works — UPI Payment Architecture",
+    description: "Step-by-step breakdown of PayXa direct UPI payments and reconciliation.",
+    url: `${site.url}/how-it-works`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "How PayXa Works" }],
+  },
+};
 
 const states = [
   { s: "CHECKOUT_STARTED", d: "Session created, merchant alerted", c: "border-crimson/50 text-neon" },
@@ -36,6 +49,12 @@ const rules: [string, string][] = [
 export default function HowItWorksPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "How It Works", url: "/how-it-works" },
+        ]}
+      />
       <PageHero
         eyebrow="How it works"
         title={"From tap to\ntrusted. Step by step."}

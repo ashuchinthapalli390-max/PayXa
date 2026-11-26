@@ -4,15 +4,33 @@ import { ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import ProductShowcase from "@/components/home/ProductShowcase";
 import FinalCTA from "@/components/home/FinalCTA";
-import { productLinks } from "@/lib/site";
+import { productLinks, site } from "@/lib/site";
 import { Reveal } from "@/components/fx/Reveal";
 import { SpotlightCard } from "@/components/fx/Interactive";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
-export const metadata: Metadata = { title: "Products" };
+export const metadata: Metadata = {
+  title: "PayXa Products — Complete UPI Checkout Suite",
+  description:
+    "Explore PayXa payment products: hosted UPI checkout, shareable payment links, dynamic QR payments, instant merchant companion alerts, and automated reconciliation.",
+  alternates: { canonical: `${site.url}/products` },
+  openGraph: {
+    title: "PayXa Products — Complete UPI Checkout Suite",
+    description: "Explore PayXa payment products: checkout, payment links, QR, and alerts.",
+    url: `${site.url}/products`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Products" }],
+  },
+};
 
 export default function ProductsPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Products", url: "/products" },
+        ]}
+      />
       <PageHero
         eyebrow="PayXa products"
         title={"Everything to accept\nUPI, connected."}

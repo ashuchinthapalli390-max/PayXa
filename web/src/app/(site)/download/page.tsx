@@ -8,8 +8,21 @@ import { Reveal } from "@/components/fx/Reveal";
 import { SectionHeader } from "@/components/ui/Section";
 import CopyValue from "@/components/download/CopyValue";
 import { merchantApp, merchantAppSizeMb } from "@/lib/merchant-app";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Download PayXa Merchant" };
+export const metadata: Metadata = {
+  title: "Download PayXa Merchant Android App (APK)",
+  description:
+    "Official download for the PayXa Merchant Android application. Receive instant Payment Started push alerts, pair cashiers, and detect supported UPI credit alerts.",
+  alternates: { canonical: `${site.url}/download` },
+  openGraph: {
+    title: "Download PayXa Merchant Android Companion App",
+    description: "Official APK download for PayXa Merchant: payment alerts, pairing, and live credit tracking.",
+    url: `${site.url}/download`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "PayXa Merchant App" }],
+  },
+};
 
 const permissions = [
   { icon: BellRing, name: "Push notifications", why: "Show Payment Started, Detected and Verified alerts." },
@@ -22,8 +35,39 @@ const permissions = [
 ];
 
 export default function DownloadPage() {
+  const appSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "PayXa Merchant",
+    operatingSystem: "Android 8.0 and above",
+    applicationCategory: "BusinessApplication",
+    softwareVersion: merchantApp.version,
+    fileSize: `${merchantAppSizeMb}MB`,
+    downloadUrl: `${site.url}/download/android`,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "INR",
+    },
+    author: {
+      "@type": "Organization",
+      name: "PayXa",
+      url: site.url,
+    },
+  };
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Download Merchant App", url: "/download" },
+        ]}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }}
+      />
       <PageHero
         scene="phone"
         side="right"

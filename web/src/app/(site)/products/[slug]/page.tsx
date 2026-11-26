@@ -11,6 +11,8 @@ import { SectionHeader } from "@/components/ui/Section";
 import HorizontalRail from "@/components/fx/HorizontalRail";
 import Scene from "@/components/three/Scene";
 import type { Shape } from "@/components/three/sceneStore";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
 const heroScene: Record<string, Shape> = {
   checkout: "qr",
@@ -26,7 +28,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const p = productDetails.find((x) => x.slug === slug);
-  return { title: p ? p.eyebrow.replace("Product · ", "") : "Product" };
+  if (!p) return { title: "Product" };
+  const cleanTitle = p.eyebrow.replace("Product · ", "");
+  return {
+    title: `${cleanTitle} — PayXa UPI Payment Suite`,
+    description: p.description,
+    alternates: { canonical: `${site.url}/products/${slug}` },
+    openGraph: {
+      title: `${cleanTitle} — PayXa`,
+      description: p.description,
+      url: `${site.url}/products/${slug}`,
+      images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: cleanTitle }],
+    },
+  };
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -36,6 +50,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Products", url: "/products" },
+          { name: p.eyebrow.replace("Product · ", ""), url: `/products/${slug}` },
+        ]}
+      />
       <PageHero eyebrow={p.eyebrow} title={p.title} accentWords={p.accent} description={p.description} scene={heroScene[p.slug] ?? "rings"}>
         <div className="mt-10 flex flex-wrap gap-3">
           <Link href="/register" className="btn btn-primary">

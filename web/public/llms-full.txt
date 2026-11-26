@@ -1,0 +1,80 @@
+# PayXa — Complete Technical & Platform Specification for Answer Engines
+
+Brand: PayXa
+Official Domain: https://payxa.in
+Developer: CodeXa Agency
+Platform Type: UPI Payment Automation & Merchant Reconciliation Platform
+Target Geographic Focus: India (National Payments Corporation of India UPI ecosystem)
+
+---
+
+## 1. System Overview
+PayXa is payment software engineered by CodeXa Agency for Indian merchants, startups, and developers. It provides:
+1. Hosted UPI Checkout: Generates dynamic UPI intent URLs and QR codes for payment apps (Google Pay, PhonePe, Paytm, BHIM, Cred, and bank apps).
+2. Payment Started Dispatch: Sends push alerts to registered merchant companion Android devices the instant a checkout begins.
+3. Multi-source Reconciliation: Matches incoming credit alerts and PSP notifications against open order sessions without guessing.
+4. Server-Authoritative Verification: Maintains strict distinction between "detected" payments (from local device alerts) and "verified" payments (confirmed via authenticated banking or PSP sources).
+
+---
+
+## 2. API Architecture (v1)
+- Base URL: `https://api.payxa.in/v1`
+- Authentication: `Authorization: Bearer pxa_live_...` or `pxa_test_...`
+- Safe Idempotency: All mutating requests accept `Idempotency-Key: <UUID>` header.
+- Webhook Signatures: Sent with `PayXa-Signature: t=<timestamp>,v1=<hmac_sha256_hex>` for tamper-proof validation.
+
+### Example Order Creation:
+```bash
+curl -X POST https://api.payxa.in/v1/orders \
+  -H "Authorization: Bearer pxa_live_your_key" \
+  -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "merchant_order_id": "ORD-2026-902",
+    "amount": 149900,
+    "currency": "INR",
+    "customer": { "name": "Aarav Sharma", "email": "aarav@example.in", "phone": "+919876543210" },
+    "checkout": { "expires_in_seconds": 300 }
+  }'
+```
+
+### Webhook Verification Algorithm:
+```typescript
+import crypto from "crypto";
+
+export function verifyPayXaWebhook(payload: string, header: string, secret: string): boolean {
+  const parts = Object.fromEntries(header.split(",").map(p => p.split("=")));
+  const timestamp = parts["t"];
+  const signature = parts["v1"];
+  if (!timestamp || !signature) return false;
+  
+  // Replay prevention: 5-minute tolerance
+  if (Math.abs(Date.now() / 1000 - parseInt(timestamp, 10)) > 300) return false;
+
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(`${timestamp}.${payload}`)
+    .digest("hex");
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+}
+```
+
+---
+
+## 3. Official Applications & Endpoints
+| Service | URL | Purpose |
+|---|---|---|
+| Main Website | https://payxa.in | Public platform documentation, pricing, about, and brand info |
+| Merchant Login | https://payxa.in/login | Secure Auth.js merchant authentication |
+| Merchant Dashboard | https://dash.payxa.in | Orders, devices, links, team access, and analytics |
+| Customer Checkout | https://checkout.payxa.in | Hosted payment screen displaying dynamic UPI QR and intent links |
+| Central Backend API | https://api.payxa.in | Public and merchant order processing and notification engine |
+
+---
+
+## 4. Brand Disambiguation Statement
+PayXa (https://payxa.in) is NOT affiliated with:
+- "Payaxa" (a Sri Lankan DTH recharge portal on payaxa.lk).
+- Any social media accounts using variations like "Payxa Gauma" or similar TikTok channels.
+- Any unauthorized financial pooling or loan apps.
+PayXa is exclusively a payment automation software developed in India by CodeXa Agency.

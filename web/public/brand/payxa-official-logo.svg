@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="800" height="240" fill="none">
+  <!-- Background Obsidian -->
+  <rect width="800" height="240" rx="24" fill="#010101" />
+  
+  <!-- Subtle Grid Accent -->
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#FFFFFF" stroke-opacity="0.03" stroke-width="1" />
+    </pattern>
+    <linearGradient id="crimsonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF2E51" />
+      <stop offset="100%" stop-color="#FF6B81" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="240" fill="url(#grid)" rx="24" />
+
+  <!-- PayXa Geometric Vertex Emblem -->
+  <g transform="translate(60, 45)">
+    <!-- Outer Hex Shield -->
+    <polygon points="75,0 150,42 150,118 75,160 0,118 0,42" fill="#0A0A0A" stroke="#FF2E51" stroke-width="4" stroke-linejoin="round" />
+    <!-- Dynamic 'X' Flow Geometry -->
+    <path d="M40 45 L110 115" stroke="url(#crimsonGrad)" stroke-width="14" stroke-linecap="round" />
+    <path d="M110 45 L40 115" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" />
+    <!-- Center Node -->
+    <circle cx="75" cy="80" r="10" fill="#FF2E51" />
+  </g>
+
+  <!-- Typographic Wordmark -->
+  <g transform="translate(250, 135)">
+    <text font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="78" fill="#EDEDED" letter-spacing="-2">
+      Pay<tspan fill="#FF2E51">X</tspan>a
+    </text>
+    <text y="42" x="4" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="16" fill="#737373" letter-spacing="4" text-transform="uppercase">
+      UPI Payment Automation · India
+    </text>
+  </g>
+</svg>

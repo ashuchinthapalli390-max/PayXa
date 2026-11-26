@@ -3,12 +3,31 @@ import { Briefcase, LifeBuoy, ShieldAlert } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import { ContactForm } from "@/components/ui/Forms";
 import { Reveal } from "@/components/fx/Reveal";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Contact" };
+export const metadata: Metadata = {
+  title: "Contact PayXa — Sales, Support & Partnerships",
+  description:
+    "Get in touch with PayXa: merchant inquiries, bank partnerships, developer integration support, and security vulnerability disclosures.",
+  alternates: { canonical: `${site.url}/contact` },
+  openGraph: {
+    title: "Contact PayXa — Sales, Support & Partnerships",
+    description: "Contact the PayXa team for sales, integration support, and partnerships.",
+    url: `${site.url}/contact`,
+    images: [{ url: `${site.url}/brand/payxa-lockup.png`, width: 1200, height: 630, alt: "Contact PayXa" }],
+  },
+};
 
 export default function ContactPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Contact", url: "/contact" },
+        ]}
+      />
       <PageHero
         scene="rings"
         side="right"
